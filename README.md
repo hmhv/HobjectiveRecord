@@ -7,7 +7,7 @@ I recommend you read this article [a-real-guide-to-core-data-concurrency](http:/
 #### Usage
 
 1. copy all files in folder `HobjectiveRecord` to your project.<br>
-   ~~or Install with [CocoaPods](http://cocoapods.org) `pod 'HobjectiveRecord'`~~
+   or Install with [CocoaPods](http://cocoapods.org) `pod 'HobjectiveRecord'`
 2. `#import "HobjectiveRecord.h"` in your code or .pch file.
 
 #### Initialize
