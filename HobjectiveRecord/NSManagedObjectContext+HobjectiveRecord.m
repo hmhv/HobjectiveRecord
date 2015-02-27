@@ -40,7 +40,7 @@ static NSURL *s_storeURL = nil;
     dispatch_once(&onceToken, ^{
         s_defaultContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
         s_defaultContext.persistentStoreCoordinator = [self storeCoordinatorWithType:nil modelURL:nil storeURL:nil];
-        
+
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(save) name:UIApplicationWillTerminateNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(save) name:UIApplicationDidEnterBackgroundNotification object:nil];
     });
@@ -176,22 +176,9 @@ static NSURL *s_storeURL = nil;
     return [[self applicationDefaultDirectory] URLByAppendingPathComponent:[[self appName] stringByAppendingString:@".sqlite"]];
 }
 
-#if TARGET_OS_IPHONE
 + (NSURL *)applicationDefaultDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
-#else
-+ (NSURL *)applicationDefaultDirectory
-{
-    NSURL *url = [[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:[self appName]];
-    
-    if ([[NSFileManager defaultManager] fileExistsAtPath:url.absoluteString] == NO) {
-        [[NSFileManager defaultManager] createDirectoryAtURL:url withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-
-    return url;
-}
-#endif
 
 @end

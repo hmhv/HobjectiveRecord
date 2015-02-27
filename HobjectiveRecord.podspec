@@ -1,9 +1,9 @@
-@version = "0.1.0"
+@version = "0.1.1"
 
 Pod::Spec.new do |s|
   s.name         = "HobjectiveRecord"
   s.version      = @version
-  s.summary      = "Lightweight and sexy CoreData Library. using NSPrivateQueueConcurrencyType MOC and performBlock:"
+  s.summary      = "Lightweight and sexy CoreData Library. using NSPrivateQueueConcurrencyType MOC and [performBlock:]"
   s.homepage     = "https://github.com/hmhv/HobjectiveRecord"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
 
@@ -15,6 +15,5 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.ios.deployment_target = '6.0'
-  s.osx.deployment_target = '10.8'
 
 end
