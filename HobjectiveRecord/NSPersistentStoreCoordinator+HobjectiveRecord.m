@@ -40,15 +40,8 @@ static NSPersistentStoreCoordinator *s_defaultCStoreCoordinator;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            s_defaultCStoreCoordinator = [self createStoreCoordinatorWithModelURL:modelURL storeURL:storeURL useInMemoryStore:useInMemoryStore];
-        });
+        s_defaultCStoreCoordinator = [self createStoreCoordinatorWithModelURL:modelURL storeURL:storeURL useInMemoryStore:useInMemoryStore];
     });
-}
-
-+ (instancetype)defaultStoreCoordinator
-{
-    return s_defaultCStoreCoordinator;
 }
 
 + (instancetype)createStoreCoordinatorWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore

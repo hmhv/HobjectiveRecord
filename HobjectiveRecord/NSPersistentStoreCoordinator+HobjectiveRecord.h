@@ -30,7 +30,7 @@ extern NSString * const HRPersistentStoreCoordinatorDidMigratePersistentStore;
 
 + (void)setupDefaultStore;
 + (void)setupDefaultStoreWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore;
-+ (instancetype)defaultStoreCoordinator;
+
 + (instancetype)createStoreCoordinatorWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore;
 
 @end
