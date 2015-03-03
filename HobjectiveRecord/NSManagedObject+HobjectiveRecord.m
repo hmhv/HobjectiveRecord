@@ -532,10 +532,10 @@
             Class class = NSClassFromString(relationship.destinationEntity.name);
             id object = nil;
             if ([class useFindOrCreate]) {
-                [class findOrCreate:value inContext:self.managedObjectContext];
+                object = [class findOrCreate:value inContext:self.managedObjectContext];
             }
             else {
-                [class create:value inContext:self.managedObjectContext];
+                object = [class create:value inContext:self.managedObjectContext];
             }
             if (object) {
                 [valueArray addObject:object];
@@ -549,10 +549,10 @@
                 if ([obj isKindOfClass:[NSDictionary class]]) {
                     id object = nil;
                     if ([class useFindOrCreate]) {
-                        [class findOrCreate:value inContext:self.managedObjectContext];
+                        object = [class findOrCreate:value inContext:self.managedObjectContext];
                     }
                     else {
-                        [class create:value inContext:self.managedObjectContext];
+                        object = [class create:value inContext:self.managedObjectContext];
                     }
                     if (object) {
                         [valueArray addObject:object];
@@ -577,10 +577,10 @@
             Class class = NSClassFromString(relationship.destinationEntity.name);
             id object = nil;
             if ([class useFindOrCreate]) {
-                [class findOrCreate:value inContext:self.managedObjectContext];
+                object = [class findOrCreate:value inContext:self.managedObjectContext];
             }
             else {
-                [class create:value inContext:self.managedObjectContext];
+                object = [class create:value inContext:self.managedObjectContext];
             }
             if (object) {
                 [self setValue:object forKey:key];
