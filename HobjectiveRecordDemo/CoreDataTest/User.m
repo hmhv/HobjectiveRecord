@@ -9,6 +9,7 @@
 @implementation User
 
 @dynamic createdAt;
+@dynamic createdDate;
 @dynamic favouritesCount;
 @dynamic followersCount;
 @dynamic friendsCount;
@@ -23,7 +24,6 @@
 @dynamic statusesCount;
 @dynamic timeZone;
 @dynamic userDescription;
-@dynamic createdDate;
 @dynamic tweets;
 
 @end

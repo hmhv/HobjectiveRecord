@@ -1,5 +1,5 @@
 //
-//  NSManagedObjectContext+HobjectiveRecord.h
+//  NSURL+HobjectiveRecord.h
 //
 // Copyright (c) 2015 hmhv <http://hmhv.info/>
 //
@@ -21,23 +21,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <CoreData/CoreData.h>
+#import <Foundation/Foundation.h>
 
-@interface NSManagedObjectContext (HobjectiveRecord)
+@interface NSURL (HobjectiveRecord)
 
-+ (instancetype)defaultContext;
-
-+ (void)save;
-
-- (void)save;
-- (void)saveToStore;
-- (void)performBlockSynchronously:(void (^)())block;
-
-- (instancetype)createChildContext;
-- (instancetype)createChildContextForMainQueue;
-
-// Do not use if you don't know what you do.
-+ (instancetype)createContextWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore;
-+ (instancetype)createContextForMainQueueWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore;
++ (NSURL *)defaultModelURL;
++ (NSURL *)defaultModelURL:(NSString *)modelName;
++ (NSURL *)defaultStoreURL;
++ (NSURL *)defaultStoreURL:(NSString *)fileName;
 
 @end

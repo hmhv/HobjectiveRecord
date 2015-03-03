@@ -48,11 +48,16 @@
         TweetViewController *vc = [segue destinationViewController];
         vc.twitterAccount = self.twitterAccount;
     }
+    else if ([[segue identifier] isEqualToString:@"Tweet3LayerSegue"]) {
+        TweetViewController *vc = [segue destinationViewController];
+        vc.twitterAccount = self.twitterAccount;
+        vc.use3Layer = YES;
+    }
 }
 
 - (IBAction)removeAllData:(id)sender
 {
-    NSManagedObjectContext *moc = [NSManagedObjectContext defaultMoc];
+    NSManagedObjectContext *moc = [NSManagedObjectContext defaultContext];
     
     [moc performBlock:^{
         NSLog(@"Before Delete %ld tweets of %ld users", (unsigned long)[Tweet count], (unsigned long)[User count]);

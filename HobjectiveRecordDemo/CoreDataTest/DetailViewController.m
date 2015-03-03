@@ -26,7 +26,7 @@
     [super viewDidLoad];
     
 #if USE_MAIN_QUEUE
-    self.moc = [[NSManagedObjectContext defaultMoc] createChildMocForMainQueue];
+    self.moc = [[NSManagedObjectContext defaultContext] createChildContextForMainQueue];
     
     if (self.objectId) {
         self.tweet = (Tweet *)[self.moc objectWithID:self.objectId];
@@ -41,7 +41,7 @@
     self.screenNameTextField.text = self.tweet.user.screenName;
     self.tweetTextView.text = self.tweet.text;
 #else
-    self.moc = [[NSManagedObjectContext defaultMoc] createChildMocForPrivateQueue];
+    self.moc = [[NSManagedObjectContext defaultContext] createChildContext];
 
     [self.moc performBlock:^{
         if (self.objectId) {

@@ -17,20 +17,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qLC-lP-NsS">
-                                <rect key="frame" x="58" y="150" width="204" height="46"/>
-                                <color key="backgroundColor" red="0.80000001190000003" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="46" id="7Sb-sI-evh"/>
-                                </constraints>
-                                <state key="normal" title="Remove All Data">
-                                    <color key="titleColor" red="0.50196081400000003" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="removeAllData:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="gGy-FM-fZ1"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bWm-jZ-UjP">
                                 <rect key="frame" x="58" y="82" width="204" height="46"/>
                                 <color key="backgroundColor" red="0.80000001192092896" green="1" blue="0.40000000596046448" alpha="1" colorSpace="calibratedRGB"/>
@@ -45,14 +31,45 @@
                                     <segue destination="5cu-rH-G6z" kind="push" identifier="TweetSegue" id="pHG-h0-pfQ"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kz0-2E-Bvw">
+                                <rect key="frame" x="58" y="157" width="204" height="46"/>
+                                <color key="backgroundColor" red="0.80000001190000003" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="Z3T-yR-dEU"/>
+                                </constraints>
+                                <state key="normal" title="Show All Data on 3 Layer">
+                                    <color key="titleColor" red="0.50196081400000003" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="5cu-rH-G6z" kind="push" identifier="Tweet3LayerSegue" id="MTU-7o-fyj"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qLC-lP-NsS">
+                                <rect key="frame" x="58" y="231" width="204" height="46"/>
+                                <color key="backgroundColor" red="0.80000001190000003" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="7Sb-sI-evh"/>
+                                </constraints>
+                                <state key="normal" title="Remove All Data">
+                                    <color key="titleColor" red="0.50196081400000003" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="removeAllData:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="gGy-FM-fZ1"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="kz0-2E-Bvw" firstAttribute="top" secondItem="bWm-jZ-UjP" secondAttribute="bottom" constant="29" id="Dfx-fX-F5I"/>
                             <constraint firstAttribute="trailing" secondItem="bWm-jZ-UjP" secondAttribute="trailing" constant="58" id="Qs0-tx-8wg"/>
+                            <constraint firstAttribute="trailing" secondItem="kz0-2E-Bvw" secondAttribute="trailing" constant="58" id="Vuq-kL-0u4"/>
+                            <constraint firstItem="qLC-lP-NsS" firstAttribute="top" secondItem="kz0-2E-Bvw" secondAttribute="bottom" constant="28" id="fy6-dm-ZeU"/>
                             <constraint firstItem="bWm-jZ-UjP" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="18" id="kcS-Os-Kxt"/>
                             <constraint firstAttribute="trailing" secondItem="qLC-lP-NsS" secondAttribute="trailing" constant="58" id="mn2-Ie-iso"/>
-                            <constraint firstItem="qLC-lP-NsS" firstAttribute="top" secondItem="bWm-jZ-UjP" secondAttribute="bottom" constant="22" id="oYx-LP-tvE"/>
                             <constraint firstItem="bWm-jZ-UjP" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="58" id="pLa-A9-xvv"/>
+                            <constraint firstItem="kz0-2E-Bvw" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="58" id="rc7-9E-RbN"/>
                             <constraint firstItem="qLC-lP-NsS" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="58" id="wmS-yy-bId"/>
                         </constraints>
                     </view>
@@ -84,7 +101,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F37-2T-3Jr">
-                                                    <rect key="frame" x="8" y="2" width="304" height="20"/>
+                                                    <rect key="frame" x="60" y="2" width="252" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="rgN-5a-7dC"/>
                                                     </constraints>
@@ -93,19 +110,28 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="304" translatesAutoresizingMaskIntoConstraints="NO" id="Ui7-DG-krD">
-                                                    <rect key="frame" x="8" y="24" width="304" height="35.5"/>
+                                                    <rect key="frame" x="60" y="24" width="252" height="35.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="D0H-R5-cmJ">
+                                                    <rect key="frame" x="8" y="8" width="44" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="44" id="opS-gJ-QqF"/>
+                                                        <constraint firstAttribute="width" constant="44" id="zzX-NP-X7S"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="F37-2T-3Jr" firstAttribute="top" secondItem="Tlj-Vt-muh" secondAttribute="top" constant="2" id="9vc-1H-aOO"/>
-                                                <constraint firstItem="F37-2T-3Jr" firstAttribute="leading" secondItem="Tlj-Vt-muh" secondAttribute="leading" constant="8" id="Hlz-Ov-1Z9"/>
+                                                <constraint firstItem="Ui7-DG-krD" firstAttribute="leading" secondItem="D0H-R5-cmJ" secondAttribute="trailing" constant="8" id="IXu-9a-veV"/>
                                                 <constraint firstAttribute="trailing" secondItem="F37-2T-3Jr" secondAttribute="trailing" constant="8" id="Ljd-EA-1Ue"/>
                                                 <constraint firstAttribute="bottom" secondItem="Ui7-DG-krD" secondAttribute="bottom" id="Ma6-ai-WTU"/>
+                                                <constraint firstItem="F37-2T-3Jr" firstAttribute="leading" secondItem="D0H-R5-cmJ" secondAttribute="trailing" constant="8" id="OAY-On-vBB"/>
+                                                <constraint firstItem="D0H-R5-cmJ" firstAttribute="leading" secondItem="Tlj-Vt-muh" secondAttribute="leading" constant="8" id="ale-Nm-RPe"/>
                                                 <constraint firstItem="Ui7-DG-krD" firstAttribute="top" secondItem="F37-2T-3Jr" secondAttribute="bottom" constant="2" id="bY7-yc-1c8"/>
-                                                <constraint firstItem="Ui7-DG-krD" firstAttribute="leading" secondItem="Tlj-Vt-muh" secondAttribute="leading" constant="8" id="gar-oP-eTF"/>
+                                                <constraint firstItem="D0H-R5-cmJ" firstAttribute="top" secondItem="Tlj-Vt-muh" secondAttribute="top" constant="8" id="cwa-Il-xjg"/>
                                                 <constraint firstAttribute="trailing" secondItem="Ui7-DG-krD" secondAttribute="trailing" constant="8" id="xIX-NQ-Dlp"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -265,4 +291,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="MTU-7o-fyj"/>
+    </inferredMetricsTieBreakers>
 </document>

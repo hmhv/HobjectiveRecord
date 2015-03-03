@@ -71,7 +71,9 @@
                 if ([tweetDictionary isKindOfClass:[NSDictionary class]]) {
                     if (tweetDictionary[@"id_str"]) {
                         [self.moc performBlock:^{
-                            [Tweet create:tweetDictionary inContext:self.moc];
+                            if (self.moc) {
+                                [Tweet create:tweetDictionary inContext:self.moc];
+                            }
                         }];
                     }
                 }

@@ -21,5 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "NSManagedObjectContext+HobjectiveRecord.h"
 #import "NSManagedObject+HobjectiveRecord.h"
+#import "NSManagedObjectContext+HobjectiveRecord.h"
+#import "NSPersistentStoreCoordinator+HobjectiveRecord.h"
+#import "NSURL+HobjectiveRecord.h"

@@ -30,7 +30,6 @@
 - (void)save;
 - (void)saveToStore;
 - (void)delete;
-- (instancetype)update:(NSDictionary *)attributes;
 
 - (void)performBlock:(void (^)())block;
 - (void)performBlockSynchronously:(void (^)())block;
@@ -51,20 +50,20 @@
 + (NSArray *)all;
 + (NSArray *)allInContext:(NSManagedObjectContext *)context;
 
-+ (NSArray *)allWithOrder:(id)order;
-+ (NSArray *)allWithOrder:(id)order inContext:(NSManagedObjectContext *)context;
++ (NSArray *)allWithOrder:(NSString *)order;
++ (NSArray *)allWithOrder:(NSString *)order inContext:(NSManagedObjectContext *)context;
 
 + (NSArray *)where:(id)condition;
 + (NSArray *)where:(id)condition inContext:(NSManagedObjectContext *)context;
 
-+ (NSArray *)where:(id)condition order:(id)order;
-+ (NSArray *)where:(id)condition order:(id)order inContext:(NSManagedObjectContext *)context;
++ (NSArray *)where:(id)condition order:(NSString *)order;
++ (NSArray *)where:(id)condition order:(NSString *)order inContext:(NSManagedObjectContext *)context;
 
 + (NSArray *)where:(id)condition limit:(NSNumber *)limit;
 + (NSArray *)where:(id)condition limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context;
 
-+ (NSArray *)where:(id)condition order:(id)order limit:(NSNumber *)limit;
-+ (NSArray *)where:(id)condition order:(id)order limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context;
++ (NSArray *)where:(id)condition order:(NSString *)order limit:(NSNumber *)limit;
++ (NSArray *)where:(id)condition order:(NSString *)order limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context;
 
 + (instancetype)find:(id)condition;
 + (instancetype)find:(id)condition inContext:(NSManagedObjectContext *)context;
@@ -82,15 +81,21 @@
 
 #pragma mark - FetchedResultsController
 
-+ (NSFetchedResultsController *)createFetchedResultsController:(id)condition order:(id)order sectionNameKeyPath:(NSString *)sectionNameKeyPath;
-+ (NSFetchedResultsController *)createFetchedResultsController:(id)condition order:(id)order sectionNameKeyPath:(NSString *)sectionNameKeyPath inContext:(NSManagedObjectContext *)context;
++ (NSFetchedResultsController *)createFetchedResultsControllerWithCondition:(id)condition order:(NSString *)order sectionNameKeyPath:(NSString *)sectionNameKeyPath;
++ (NSFetchedResultsController *)createFetchedResultsControllerWithCondition:(id)condition order:(NSString *)order sectionNameKeyPath:(NSString *)sectionNameKeyPath inContext:(NSManagedObjectContext *)context;
 
 #pragma mark - Naming
 
 + (NSString *)entityName;
 
+#pragma mark - Fetching
+
++ (BOOL)returnsObjectsAsFaults;
++ (NSArray *)relationshipKeyPathsForPrefetching;
+
 #pragma mark - Mappings
 
 + (NSDictionary *)mappings;
++ (BOOL)useFindOrCreate;
 
 @end

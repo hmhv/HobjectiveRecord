@@ -1,5 +1,5 @@
 //
-//  NSManagedObjectContext+HobjectiveRecord.h
+//  NSPersistentStoreCoordinator+HobjectiveRecord.h
 //
 // Copyright (c) 2015 hmhv <http://hmhv.info/>
 //
@@ -23,21 +23,14 @@
 
 #import <CoreData/CoreData.h>
 
-@interface NSManagedObjectContext (HobjectiveRecord)
+extern NSString * const HRPersistentStoreCoordinatorWillMigratePersistentStore;
+extern NSString * const HRPersistentStoreCoordinatorDidMigratePersistentStore;
 
-+ (instancetype)defaultContext;
+@interface NSPersistentStoreCoordinator (HobjectiveRecord)
 
-+ (void)save;
-
-- (void)save;
-- (void)saveToStore;
-- (void)performBlockSynchronously:(void (^)())block;
-
-- (instancetype)createChildContext;
-- (instancetype)createChildContextForMainQueue;
-
-// Do not use if you don't know what you do.
-+ (instancetype)createContextWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore;
-+ (instancetype)createContextForMainQueueWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore;
++ (void)setupDefaultStore;
++ (void)setupDefaultStoreWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore;
++ (instancetype)defaultStoreCoordinator;
++ (instancetype)createStoreCoordinatorWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore;
 
 @end

@@ -10,7 +10,7 @@
 @interface TwitterStream : NSObject
 
 @property (nonatomic, strong) ACAccount *twitterAccount;
-@property (strong, nonatomic) NSManagedObjectContext *moc;
+@property (nonatomic, weak) NSManagedObjectContext *moc;
 
 - (void)start;
 - (void)stop;

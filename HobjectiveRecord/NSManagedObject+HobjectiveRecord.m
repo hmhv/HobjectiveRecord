@@ -72,28 +72,6 @@
     [self.managedObjectContext deleteObject:self];
 }
 
-- (instancetype)update:(NSDictionary *)propertis
-{
-    if (propertis && [propertis isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *attributes = [[self entity] attributesByName];
-        NSDictionary *relationships = [[self entity] relationshipsByName];
-        
-        [propertis enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            
-            NSString *localKey = [[self class] keyForRemoteKey:key inContext:self.managedObjectContext];
-            
-            if (attributes[localKey]) {
-                [self setAttributeValue:obj forKey:localKey withAttribute:attributes[localKey]];
-            }
-            else if (relationships[localKey]) {
-                [self setRelationshipValue:obj forKey:localKey withRelationship:relationships[localKey]];
-            }
-        }];
-    }
-    
-    return self;
-}
-
 - (void)performBlock:(void (^)())block
 {
     if (block) {
@@ -114,7 +92,7 @@
 
 + (instancetype)create
 {
-    return [self create:nil inContext:[NSManagedObjectContext defaultMoc]];
+    return [self create:nil inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (instancetype)createInContext:(NSManagedObjectContext *)context
@@ -124,7 +102,7 @@
 
 + (instancetype)create:(NSDictionary *)attributes
 {
-    return [self create:attributes inContext:[NSManagedObjectContext defaultMoc]];
+    return [self create:attributes inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (instancetype)create:(NSDictionary *)attributes inContext:(NSManagedObjectContext *)context
@@ -135,7 +113,7 @@
 
 + (void)deleteAll
 {
-    [self deleteAllInContext:[NSManagedObjectContext defaultMoc]];
+    [self deleteAllInContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (void)deleteAllInContext:(NSManagedObjectContext *)context
@@ -151,27 +129,27 @@
 
 + (NSArray *)all
 {
-    return [self allWithOrder:nil inContext:[NSManagedObjectContext defaultMoc]];
+    return [self allWithOrder:nil inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (NSArray *)allInContext:(NSManagedObjectContext *)context
 {
-    return [self allWithOrder:nil inContext:[NSManagedObjectContext defaultMoc]];
+    return [self allWithOrder:nil inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (NSArray *)allWithOrder:(id)order
++ (NSArray *)allWithOrder:(NSString *)order
 {
-    return [self allWithOrder:order inContext:[NSManagedObjectContext defaultMoc]];
+    return [self allWithOrder:order inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (NSArray *)allWithOrder:(id)order inContext:(NSManagedObjectContext *)context
++ (NSArray *)allWithOrder:(NSString *)order inContext:(NSManagedObjectContext *)context
 {
     return [self fetchWithCondition:nil withOrder:order fetchLimit:nil inContext:context];
 }
 
 + (NSArray *)where:(id)condition
 {
-    return [self where:condition order:nil limit:nil inContext:[NSManagedObjectContext defaultMoc]];
+    return [self where:condition order:nil limit:nil inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (NSArray *)where:(id)condition inContext:(NSManagedObjectContext *)context
@@ -179,19 +157,19 @@
     return [self where:condition order:nil limit:nil inContext:context];
 }
 
-+ (NSArray *)where:(id)condition order:(id)order
++ (NSArray *)where:(id)condition order:(NSString *)order
 {
-    return [self where:condition order:order limit:nil inContext:[NSManagedObjectContext defaultMoc]];
+    return [self where:condition order:order limit:nil inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (NSArray *)where:(id)condition order:(id)order inContext:(NSManagedObjectContext *)context
++ (NSArray *)where:(id)condition order:(NSString *)order inContext:(NSManagedObjectContext *)context
 {
     return [self where:condition order:order limit:nil inContext:context];
 }
 
 + (NSArray *)where:(id)condition limit:(NSNumber *)limit
 {
-    return [self where:condition order:nil limit:limit inContext:[NSManagedObjectContext defaultMoc]];
+    return [self where:condition order:nil limit:limit inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (NSArray *)where:(id)condition limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context
@@ -199,19 +177,19 @@
     return [self where:condition order:nil limit:limit inContext:context];
 }
 
-+ (NSArray *)where:(id)condition order:(id)order limit:(NSNumber *)limit
++ (NSArray *)where:(id)condition order:(NSString *)order limit:(NSNumber *)limit
 {
-    return [self where:condition order:order limit:limit inContext:[NSManagedObjectContext defaultMoc]];
+    return [self where:condition order:order limit:limit inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (NSArray *)where:(id)condition order:(id)order limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context
++ (NSArray *)where:(id)condition order:(NSString *)order limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context
 {
     return [self fetchWithCondition:condition withOrder:order fetchLimit:limit inContext:context];
 }
 
 + (instancetype)find:(id)condition
 {
-    return [self find:condition inContext:[NSManagedObjectContext defaultMoc]];
+    return [self find:condition inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (instancetype)find:(id)condition inContext:(NSManagedObjectContext *)context
@@ -221,7 +199,7 @@
 
 + (instancetype)findOrCreate:(NSDictionary *)attributes
 {
-    return [self findOrCreate:attributes inContext:[NSManagedObjectContext defaultMoc]];
+    return [self findOrCreate:attributes inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (instancetype)findOrCreate:(NSDictionary *)properties inContext:(NSManagedObjectContext *)context
@@ -234,7 +212,7 @@
 
 + (NSUInteger)count
 {
-    return [self countWhere:nil inContext:[NSManagedObjectContext defaultMoc]];
+    return [self countWhere:nil inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (NSUInteger)countInContext:(NSManagedObjectContext *)context
@@ -244,7 +222,7 @@
 
 + (NSUInteger)countWhere:(id)condition
 {
-    return [self countWhere:condition inContext:[NSManagedObjectContext defaultMoc]];
+    return [self countWhere:condition inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (NSUInteger)countWhere:(id)condition inContext:(NSManagedObjectContext *)context
@@ -254,15 +232,15 @@
 
 #pragma mark - FetchedResultsController
 
-+ (NSFetchedResultsController *)createFetchedResultsController:(id)condition order:(id)order sectionNameKeyPath:(NSString *)sectionNameKeyPath
++ (NSFetchedResultsController *)createFetchedResultsControllerWithCondition:(id)condition order:(NSString *)order sectionNameKeyPath:(NSString *)sectionNameKeyPath
 {
-    return [self createFetchedResultsController:condition
-                                          order:order
-                             sectionNameKeyPath:sectionNameKeyPath
-                                      inContext:[NSManagedObjectContext defaultMoc]];
+    return [self createFetchedResultsControllerWithCondition:condition
+                                                       order:order
+                                          sectionNameKeyPath:sectionNameKeyPath
+                                                   inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (NSFetchedResultsController *)createFetchedResultsController:(id)condition order:(id)order sectionNameKeyPath:(NSString *)sectionNameKeyPath inContext:(NSManagedObjectContext *)context
++ (NSFetchedResultsController *)createFetchedResultsControllerWithCondition:(id)condition order:(NSString *)order sectionNameKeyPath:(NSString *)sectionNameKeyPath inContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [self createFetchRequestWithCondition:condition
                                                           withOrder:order
@@ -281,11 +259,28 @@
     return NSStringFromClass(self);
 }
 
+#pragma mark - Fetching
+
++ (BOOL)returnsObjectsAsFaults
+{
+    return NO;
+}
+
++ (NSArray *)relationshipKeyPathsForPrefetching
+{
+    return nil;
+}
+
 #pragma mark - Mappings
 
 + (NSDictionary *)mappings
 {
     return nil;
+}
+
++ (BOOL)useFindOrCreate
+{
+    return YES;
 }
 
 #pragma mark - Private
@@ -329,65 +324,48 @@
     return nil;
 }
 
-+ (NSSortDescriptor *)sortDescriptorFromDictionary:(NSDictionary *)dict
++ (NSSortDescriptor *)sortDescriptor:(NSString *)sortKeyAndValue
 {
-    BOOL isAscending = ![[dict.allValues.firstObject uppercaseString] isEqualToString:@"DESC"];
-    return [NSSortDescriptor sortDescriptorWithKey:dict.allKeys.firstObject ascending:isAscending];
-}
+    NSArray *keyAndValue = [sortKeyAndValue componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-+ (NSSortDescriptor *)sortDescriptorFromString:(NSString *)order
-{
-    NSArray *components = [order componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
-    NSString *key = [components firstObject];
-    NSString *value = [components count] > 1 ? [components lastObject] : @"ASC";
-    
-    return [self sortDescriptorFromDictionary:@{key: value}];
-}
+    NSString *key = nil;
 
-+ (NSSortDescriptor *)sortDescriptorFromObject:(id)order
-{
-    if ([order isKindOfClass:[NSSortDescriptor class]]) {
-        return order;
-    }
-    
-    if ([order isKindOfClass:[NSString class]]) {
-        return [self sortDescriptorFromString:order];
-    }
-    
-    if ([order isKindOfClass:[NSDictionary class]]) {
-        return [self sortDescriptorFromDictionary:order];
-    }
-    
-    return nil;
-}
+    BOOL isAscending = YES;
 
-+ (NSArray *)sortDescriptorsFromObject:(id)order
-{
-    if ([order isKindOfClass:[NSString class]]) {
-        order = [order componentsSeparatedByString:@","];
-    }
-    
-    if ([order isKindOfClass:[NSArray class]]) {
-        NSArray *orderArray = (NSArray *)order;
-        NSMutableArray *array = [NSMutableArray arrayWithCapacity:orderArray.count];
+    for (NSString *keyOrValue in keyAndValue) {
+        if ([keyOrValue length] == 0) continue;
         
-        for (id object in order) {
-            id newObject = [self sortDescriptorFromObject:object];
-            
-            if (newObject) {
-                [array addObject:newObject];
-            }
+        if (key == nil) {
+            key = keyOrValue;
+            continue;
         }
-        
-        return array;
+        else if ([[keyOrValue uppercaseString] hasPrefix:@"D"]) {
+            isAscending = NO;
+            break;
+        }
     }
     
-    return @[[self sortDescriptorFromObject:order]];
+    return key ? [NSSortDescriptor sortDescriptorWithKey:key ascending:isAscending] : nil;
+}
+
++ (NSArray *)sortDescriptors:(NSString *)order
+{
+    NSArray *orders = [order componentsSeparatedByString:@","];
+    NSMutableArray *sortDescriptors = [NSMutableArray arrayWithCapacity:orders.count];
+    
+    for (NSString *sortKeyAndValue in orders) {
+        id newObject = [self sortDescriptor:sortKeyAndValue];
+        
+        if (newObject) {
+            [sortDescriptors addObject:newObject];
+        }
+    }
+    
+    return sortDescriptors;
 }
 
 + (NSFetchRequest *)createFetchRequestWithCondition:(id)condition
-                                          withOrder:(id)order
+                                          withOrder:(NSString *)order
                                          fetchLimit:(NSNumber *)fetchLimit
                                           inContext:(NSManagedObjectContext *)context
 {
@@ -401,23 +379,22 @@
     }
     
     if (order) {
-        [request setSortDescriptors:[self sortDescriptorsFromObject:order]];
+        [request setSortDescriptors:[self sortDescriptors:order]];
     }
     
     if (fetchLimit) {
         [request setFetchLimit:[fetchLimit integerValue]];
     }
     
-    request.returnsObjectsAsFaults = NO;
+    request.returnsObjectsAsFaults = [self returnsObjectsAsFaults];
     
-    NSDictionary *relationships = [entity relationshipsByName];
-    request.relationshipKeyPathsForPrefetching = [relationships allKeys];
+    request.relationshipKeyPathsForPrefetching = [self relationshipKeyPathsForPrefetching];
     
     return request;
 }
 
 + (NSArray *)fetchWithCondition:(id)condition
-                      withOrder:(id)order
+                      withOrder:(NSString *)order
                      fetchLimit:(NSNumber *)fetchLimit
                       inContext:(NSManagedObjectContext *)context
 {
@@ -449,6 +426,28 @@
         NSLog(@"ERROR WHILE EXECUTE COUNT FETCH REEQUEST %@", error);
     }
     return count;
+}
+
+- (instancetype)update:(NSDictionary *)propertis
+{
+    if (propertis && [propertis isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *attributes = [[self entity] attributesByName];
+        NSDictionary *relationships = [[self entity] relationshipsByName];
+        
+        [propertis enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            
+            NSString *localKey = [[self class] keyForRemoteKey:key inContext:self.managedObjectContext];
+            
+            if (attributes[localKey]) {
+                [self setAttributeValue:obj forKey:localKey withAttribute:attributes[localKey]];
+            }
+            else if (relationships[localKey]) {
+                [self setRelationshipValue:obj forKey:localKey withRelationship:relationships[localKey]];
+            }
+        }];
+    }
+    
+    return self;
 }
 
 + (NSCache *)keyMappingCache
@@ -512,6 +511,12 @@
             else if (attributeType == NSDecimalAttributeType) {
                 value = [NSDecimalNumber decimalNumberWithString:value];
             }
+            else if (attributeType == NSDecimalAttributeType) {
+                value = [NSDecimalNumber decimalNumberWithString:value];
+            }
+            else if (attributeType == NSBinaryDataAttributeType) {
+                value = [value dataUsingEncoding:NSUTF8StringEncoding];
+            }
         }
         
         [self setValue:value forKey:key];
@@ -525,7 +530,13 @@
         
         if ([value isKindOfClass:[NSDictionary class]]) {
             Class class = NSClassFromString(relationship.destinationEntity.name);
-            id object = [class findOrCreate:value inContext:self.managedObjectContext];
+            id object = nil;
+            if ([class useFindOrCreate]) {
+                [class findOrCreate:value inContext:self.managedObjectContext];
+            }
+            else {
+                [class create:value inContext:self.managedObjectContext];
+            }
             if (object) {
                 [valueArray addObject:object];
             }
@@ -536,19 +547,18 @@
             
             [objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 if ([obj isKindOfClass:[NSDictionary class]]) {
-                    id object = [class findOrCreate:obj inContext:self.managedObjectContext];
+                    id object = nil;
+                    if ([class useFindOrCreate]) {
+                        [class findOrCreate:value inContext:self.managedObjectContext];
+                    }
+                    else {
+                        [class create:value inContext:self.managedObjectContext];
+                    }
                     if (object) {
                         [valueArray addObject:object];
                     }
                 }
             }];
-        }
-        else if ([value isKindOfClass:[NSSet class]]) {
-            NSSet *setValue = (NSSet *)value;
-            [valueArray addObjectsFromArray:setValue.allObjects];
-        }
-        else if ([relationship.destinationEntity.name isEqualToString:NSStringFromClass([value class])]) {
-            [valueArray addObject:value];
         }
         
         if (relationship.isOrdered) {
@@ -565,13 +575,16 @@
     else {
         if ([value isKindOfClass:[NSDictionary class]]) {
             Class class = NSClassFromString(relationship.destinationEntity.name);
-            id object = [class findOrCreate:value inContext:self.managedObjectContext];
+            id object = nil;
+            if ([class useFindOrCreate]) {
+                [class findOrCreate:value inContext:self.managedObjectContext];
+            }
+            else {
+                [class create:value inContext:self.managedObjectContext];
+            }
             if (object) {
                 [self setValue:object forKey:key];
             }
-        }
-        else if ([relationship.destinationEntity.name isEqualToString:NSStringFromClass([value class])]) {
-            [self setValue:value forKey:key];
         }
         else {
             [self setNilValueForKey:key];

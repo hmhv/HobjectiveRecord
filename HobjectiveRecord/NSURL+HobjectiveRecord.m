@@ -1,5 +1,5 @@
 //
-//  NSManagedObjectContext+HobjectiveRecord.h
+//  NSURL+HobjectiveRecord.m
 //
 // Copyright (c) 2015 hmhv <http://hmhv.info/>
 //
@@ -21,23 +21,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <CoreData/CoreData.h>
+#import "NSURL+HobjectiveRecord.h"
 
-@interface NSManagedObjectContext (HobjectiveRecord)
+@implementation NSURL (HobjectiveRecord)
 
-+ (instancetype)defaultContext;
++ (NSURL *)defaultModelURL
+{
+    return [self defaultModelURL:nil];
+}
 
-+ (void)save;
++ (NSURL *)defaultModelURL:(NSString *)modelName
+{
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:(modelName ?: [self appName]) withExtension:@"momd"];
+    return modelURL;
+}
 
-- (void)save;
-- (void)saveToStore;
-- (void)performBlockSynchronously:(void (^)())block;
++ (NSURL *)defaultStoreURL
+{
+    return [self defaultStoreURL:nil];
+}
 
-- (instancetype)createChildContext;
-- (instancetype)createChildContextForMainQueue;
++ (NSURL *)defaultStoreURL:(NSString *)fileName
+{
+    return [[self applicationDocumentDirectory] URLByAppendingPathComponent:(fileName ?: [[self appName] stringByAppendingString:@".sqlite"])];
+}
 
-// Do not use if you don't know what you do.
-+ (instancetype)createContextWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore;
-+ (instancetype)createContextForMainQueueWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore;
++ (NSString *)appName
+{
+    return [[NSBundle mainBundle] infoDictionary][@"CFBundleName"];
+}
+
++ (NSURL *)applicationDocumentDirectory
+{
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
 
 @end

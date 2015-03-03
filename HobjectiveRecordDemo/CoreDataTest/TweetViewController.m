@@ -8,6 +8,7 @@
 #import "Tweet.h"
 #import "User+Mappings.h"
 #import "DetailViewController.h"
+#import "SDWebImage/UIImageView+WebCache.h"
 
 //#define USE_WILL_DISPLAY_CELL
 
@@ -20,6 +21,7 @@
 @property (strong, nonatomic) TwitterStream *twitterStream;
 
 @property (strong, nonatomic) NSManagedObjectContext *moc;
+@property (strong, nonatomic) NSManagedObjectContext *workMoc;
 @property (strong, nonatomic) NSManagedObjectID *selectedObjectId;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResertController;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -36,13 +38,19 @@
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    self.moc = [NSManagedObjectContext defaultMoc];
+    if (self.use3Layer) {
+        self.moc = [[NSManagedObjectContext defaultContext] createChildContextForMainQueue];
+    }
+    else {
+        self.moc = [NSManagedObjectContext defaultContext];
+    }
+    self.workMoc = [self.moc createChildContext];
 
     [self.indicator startAnimating];
     
     [self.moc performBlock:^{
         
-        self.fetchedResertController = [Tweet createFetchedResultsController:nil order:@"idStr" sectionNameKeyPath:nil inContext:self.moc];
+        self.fetchedResertController = [Tweet createFetchedResultsControllerWithCondition:nil order:@"idStr" sectionNameKeyPath:nil inContext:self.moc];
         self.fetchedResertController.delegate = self;
         
         NSError *error = nil;
@@ -60,16 +68,25 @@
     [super viewWillDisappear:animated];
     
     [self stopTwitterStream];
+    [[SDWebImageManager sharedManager] cancelAll];
 }
 
 - (void)reloadData
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
+    if (self.use3Layer) {
         [self.tableView reloadData];
         [self.indicator stopAnimating];
         self.navigationItem.title = [NSString stringWithFormat:@"%ld tweets", (unsigned long)[self.fetchedResertController.fetchedObjects count]];
         NSLog(@"reloadData : %@", self.navigationItem.title);
-    });
+    }
+    else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            [self.indicator stopAnimating];
+            self.navigationItem.title = [NSString stringWithFormat:@"%ld tweets", (unsigned long)[self.fetchedResertController.fetchedObjects count]];
+            NSLog(@"reloadData : %@", self.navigationItem.title);
+        });
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -119,7 +136,7 @@
     if (self.twitterAccount) {
         self.twitterStream = [TwitterStream new];
         self.twitterStream.twitterAccount = self.twitterAccount;
-        self.twitterStream.moc = [[NSManagedObjectContext defaultMoc] createChildMocForPrivateQueue];
+        self.twitterStream.moc = self.workMoc;
         
         [self.twitterStream start];
         [self.twitterStreamButton setTitle:@"Stop Twitter Stream" forState:UIControlStateNormal];
@@ -163,11 +180,29 @@
 {
     Tweet *t = [self.fetchedResertController objectAtIndexPath:indexPath];
 
+    if (self.use3Layer) {
+        
+        UILabel *upper = (UILabel *)[cell viewWithTag:1];
+        upper.text = [NSString stringWithFormat:@"%ld - %@", (long)indexPath.row, t.user.screenName];
+        
+        UILabel *lower = (UILabel *)[cell viewWithTag:2];
+        lower.text = t.text;
+
+        if ([t.user.profileImageUrl length] > 0) {
+            UIImageView *imageView = (UIImageView *)[cell viewWithTag:3];
+            [imageView sd_setImageWithURL:[NSURL URLWithString:t.user.profileImageUrl]
+                         placeholderImage:nil];
+        }
+
+        return;
+    }
+
 #if USE_PERFORM_BLOCK
     
     [t performBlock:^{
         NSString *screenName = [NSString stringWithFormat:@"%ld - %@", (long)indexPath.row, t.user.screenName];
         NSString *text = t.text;
+        NSString *profileUrl = t.user.profileImageUrl;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             UILabel *upper = (UILabel *)[cell viewWithTag:1];
@@ -175,6 +210,13 @@
             
             UILabel *lower = (UILabel *)[cell viewWithTag:2];
             lower.text = text;
+            
+            if ([profileUrl length] > 0) {
+                UIImageView *imageView = (UIImageView *)[cell viewWithTag:3];
+                [imageView sd_setImageWithURL:[NSURL URLWithString:profileUrl]
+                             placeholderImage:nil];
+            }
+
         });
     }];
     
@@ -182,10 +224,12 @@
     
     __block NSString *screenName = nil;
     __block NSString *text = nil;
+    __block NSString *profileUrl = nil;
     
     [t.managedObjectContext performBlockAndWait:^{
         screenName = [NSString stringWithFormat:@"%ld - %@", (long)indexPath.row, t.user.screenName];
         text = t.text;
+        profileUrl = t.user.profileImageUrl;
     }];
     
     UILabel *upper = (UILabel *)[cell viewWithTag:1];
@@ -193,15 +237,23 @@
     
     UILabel *lower = (UILabel *)[cell viewWithTag:2];
     lower.text = text;
+
+    if ([profileUrl length] > 0) {
+        UIImageView *imageView = (UIImageView *)[cell viewWithTag:3];
+        [imageView sd_setImageWithURL:[NSURL URLWithString:profileUrl]
+                     placeholderImage:nil];
+    }
 
 #elif USE_PERFORM_BLOCK_SYNCHRONOUSLY
 
     __block NSString *screenName = nil;
     __block NSString *text = nil;
+    __block NSString *profileUrl = nil;
     
     [t performBlockSynchronously:^{
         screenName = [NSString stringWithFormat:@"%ld - %@", (long)indexPath.row, t.user.screenName];
         text = t.text;
+        profileUrl = t.user.profileImageUrl;
     }];
     
     UILabel *upper = (UILabel *)[cell viewWithTag:1];
@@ -209,6 +261,12 @@
     
     UILabel *lower = (UILabel *)[cell viewWithTag:2];
     lower.text = text;
+
+    if ([profileUrl length] > 0) {
+        UIImageView *imageView = (UIImageView *)[cell viewWithTag:3];
+        [imageView sd_setImageWithURL:[NSURL URLWithString:profileUrl]
+                     placeholderImage:nil];
+    }
 
 #endif
 }

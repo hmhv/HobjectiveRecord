@@ -1,9 +1,9 @@
-@version = "0.1.4"
+@version = "0.2.0"
 
 Pod::Spec.new do |s|
   s.name         = "HobjectiveRecord"
   s.version      = @version
-  s.summary      = "Lightweight and sexy CoreData Library. using NSPrivateQueueConcurrencyType MOC and [performBlock:]"
+  s.summary      = "Lightweight and sexy CoreData Library　for background operation"
   s.homepage     = "https://github.com/hmhv/HobjectiveRecord"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
 

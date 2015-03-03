@@ -10,6 +10,7 @@
 @interface User : NSManagedObject
 
 @property (nonatomic, retain) NSString * createdAt;
+@property (nonatomic, retain) NSDate * createdDate;
 @property (nonatomic, retain) NSNumber * favouritesCount;
 @property (nonatomic, retain) NSNumber * followersCount;
 @property (nonatomic, retain) NSNumber * friendsCount;
@@ -24,7 +25,6 @@
 @property (nonatomic, retain) NSNumber * statusesCount;
 @property (nonatomic, retain) NSString * timeZone;
 @property (nonatomic, retain) NSString * userDescription;
-@property (nonatomic, retain) NSDate * createdDate;
 @property (nonatomic, retain) NSSet *tweets;
 @end
 
