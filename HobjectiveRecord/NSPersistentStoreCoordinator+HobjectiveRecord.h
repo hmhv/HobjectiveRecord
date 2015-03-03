@@ -28,8 +28,8 @@ extern NSString * const HRPersistentStoreCoordinatorDidMigratePersistentStore;
 
 @interface NSPersistentStoreCoordinator (HobjectiveRecord)
 
-+ (void)setupDefaultStore;
-+ (void)setupDefaultStoreWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore;
++ (instancetype)setupDefaultStore;
++ (instancetype)setupDefaultStoreWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore;
 
 + (instancetype)createStoreCoordinatorWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore;
 

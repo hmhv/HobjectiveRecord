@@ -33,7 +33,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         s_defaultContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-        s_defaultContext.persistentStoreCoordinator = [NSPersistentStoreCoordinator createStoreCoordinatorWithModelURL:nil storeURL:nil useInMemoryStore:NO];
+        s_defaultContext.persistentStoreCoordinator = [NSPersistentStoreCoordinator setupDefaultStore];
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(save) name:UIApplicationWillTerminateNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(save) name:UIApplicationDidEnterBackgroundNotification object:nil];

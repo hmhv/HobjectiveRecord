@@ -27,21 +27,21 @@
 NSString * const HRPersistentStoreCoordinatorWillMigratePersistentStore = @"HRPersistentStoreCoordinatorWillMigratePersistentStore";
 NSString * const HRPersistentStoreCoordinatorDidMigratePersistentStore = @"HRPersistentStoreCoordinatorDidMigratePersistentStore";
 
-static NSPersistentStoreCoordinator *s_defaultCStoreCoordinator;
-
 @implementation NSPersistentStoreCoordinator (HobjectiveRecord)
 
-+ (void)setupDefaultStore
++ (instancetype)setupDefaultStore
 {
-    [self setupDefaultStoreWithModelURL:nil storeURL:nil useInMemoryStore:NO];
+    return [self setupDefaultStoreWithModelURL:nil storeURL:nil useInMemoryStore:NO];
 }
 
-+ (void)setupDefaultStoreWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore
++ (instancetype)setupDefaultStoreWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore
 {
+    static NSPersistentStoreCoordinator *s_defaultCStoreCoordinator;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         s_defaultCStoreCoordinator = [self createStoreCoordinatorWithModelURL:modelURL storeURL:storeURL useInMemoryStore:useInMemoryStore];
     });
+    return s_defaultCStoreCoordinator;
 }
 
 + (instancetype)createStoreCoordinatorWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore
