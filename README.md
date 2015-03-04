@@ -1,5 +1,7 @@
 # HobjectiveRecord
 
+[![Join the chat at https://gitter.im/hmhv/HobjectiveRecord](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hmhv/HobjectiveRecord?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 HobjectiveRecord is inspired by [ObjectiveRecord](https://github.com/supermarin/ObjectiveRecord) and customized for background operation, 
 to use `NSManagedObjectContext` of `NSPrivateQueueConcurrencyType` and `performBlock:`
 
