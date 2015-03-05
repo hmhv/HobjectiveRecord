@@ -271,7 +271,16 @@
 
 + (NSString *)entityName
 {
-    return NSStringFromClass(self);
+    NSString *name = NSStringFromClass(self);
+    
+    // for swift use
+    NSRange range = [name rangeOfString:@"."];
+    if (range.location != NSNotFound) {
+        NSArray *names = [name componentsSeparatedByString:@"."];
+        name = names.lastObject;
+    }
+    
+    return name;
 }
 
 #pragma mark - Fetching

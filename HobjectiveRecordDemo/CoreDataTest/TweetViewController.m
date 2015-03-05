@@ -116,8 +116,6 @@
         for (uint i = 0; i < tweetCount; i++) {
             [Tweet create:@{@"idStr" : [NSString stringWithFormat:@"%u", arc4random()],
                             @"text" : [NSString stringWithFormat:@"Text : %u", arc4random()],
-                            @"" : @"",
-                            @"" : @"",
                             @"user" : @{@"idStr" : [NSString stringWithFormat:@"%u", arc4random()],
                                         @"screenName" : [NSString stringWithFormat:@"S:%u", arc4random()]}
                             } inContext:self.moc];

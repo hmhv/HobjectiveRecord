@@ -84,7 +84,7 @@
         self.tweet.user.screenName = screenName;
         self.tweet.text = tweetText;
         
-        [self.moc save];
+        [self.moc saveToStore];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([self.delegate respondsToSelector:@selector(detailViewControllerFinished:)]) {
