@@ -45,8 +45,8 @@
 + (void)deleteAll;
 + (void)deleteAllInContext:(NSManagedObjectContext *)context;
 
-+ (void)deleteAllWithCondition:(id)condition;
-+ (void)deleteAllWithCondition:(id)condition inContext:(NSManagedObjectContext *)context;
++ (void)deleteWithCondition:(id)condition;
++ (void)deleteWithCondition:(id)condition inContext:(NSManagedObjectContext *)context;
 
 #pragma mark - Finders
 
@@ -79,8 +79,8 @@
 + (NSUInteger)count;
 + (NSUInteger)countInContext:(NSManagedObjectContext *)context;
 
-+ (NSUInteger)countWhere:(id)condition;
-+ (NSUInteger)countWhere:(id)condition inContext:(NSManagedObjectContext *)context;
++ (NSUInteger)countWithCondition:(id)condition;
++ (NSUInteger)countWithCondition:(id)condition inContext:(NSManagedObjectContext *)context;
 
 #pragma mark - FetchedResultsController
 

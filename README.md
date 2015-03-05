@@ -7,6 +7,8 @@ to use `NSManagedObjectContext` of `NSPrivateQueueConcurrencyType` and `performB
 
 Before you use, i recommend you read this article [a-real-guide-to-core-data-concurrency](http://quellish.tumblr.com/post/97430076027/a-real-guide-to-core-data-concurrency).
 
+> You can use HobjectiveRecord with swift. check HobjectiveRecordDemo-Swift.
+
 #### Usage
 
 1. copy all files in folder `HobjectiveRecord` to your project.<br>
@@ -38,12 +40,12 @@ use `performBlock:`
 
 ``` objc
 [[NSManagedObjectContext defaultContext] performBlock:^{
-	// your code here
+  // your code here
 }];
 
 NSManagedObjectContext *childContext = [[NSManagedObjectContext defaultContext] createChildContext];
 [childContext performBlock:^{
-	// your code here
+  // your code here
 }];
 ```
 
@@ -52,21 +54,23 @@ NSManagedObjectContext *childContext = [[NSManagedObjectContext defaultContext] 
 
 ``` objc
 [[NSManagedObjectContext defaultContext] performBlock:^{
-    Person *john = [Person create];
-    john.name = @"John";
-    [john save];
-    [john delete];
+    Tweet *tweet = [Tweet create];
+    tweet.text = @"I am here";
+    [tweet save];
+    [tweet delete];
     
-    [Person create:@{@"name" : @"John",
-                     @"age" : @12, 
-                     @"member" : @NO 
-                     }];
+    tweet = [Tweet create:@{@"text" : @"hello!!",
+                            @"lang" : @"en"} ];
+    [tweet saveToStore];
+    
+    [Tweet deleteAll];
 }];
 
 /*
 + (instancetype)create;
 + (instancetype)create:(NSDictionary *)attributes;
 + (void)deleteAll;
++ (void)deleteWithCondition:(id)condition;
 - (void)save;
 - (void)saveToStore;
 - (void)delete;
@@ -77,33 +81,24 @@ NSManagedObjectContext *childContext = [[NSManagedObjectContext defaultContext] 
 
 ``` objc
 [[NSManagedObjectContext defaultContext] performBlock:^{
-    // all Person entities from the database
-    NSArray *people = [Person all];
+    NSArray *tweets = [Tweet all];
     
-    // Person entities with name John
-    NSArray *johns = [Person where:@"name == 'John'"];
+    NSArray *tweetsInEnglish = [Tweet find:@"lang == 'en'"];
     
-    // And of course, John Doe!
-    Person *johnDoe = [Person find:@"name == 'John' AND surname == 'Doe'"];
+    User *hmhv = [User first:@"screenName == 'hmhv'"];
     
-    // Members over 18 from NY
-    NSArray *people = [Person where:@{
-                                      @"age" : @18,
-                                      @"member" : @YES,
-                                      @"state" : @"NY"
-                                      }];
+    NSArray *englishMen = [User find:@{@"lang" : @"en",
+                                       @"timeZone" : @"London"
+                                       }];
     
-    // You can even write your own NSPredicate
-    NSPredicate *predicate = [NSPredicate
-                              predicateWithFormat:@"(name like[cd] %@) AND (birthday > %@)",
-                              name, birthday];
-    NSArray *results = [Person where:predicate];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"friendsCount > 100"];
+    NSArray *manyFriendsUsers = [User find:predicate];
 }];
 /*
 + (NSArray *)all;
-+ (NSArray *)where:(id)condition;
-+ (instancetype)find:(id)condition;
-+ (instancetype)findOrCreate:(NSDictionary *)condition;
++ (NSArray *)find:(id)condition;
++ (instancetype)first:(id)condition;
++ (instancetype)firstOrCreate:(NSDictionary *)condition;
 */
 ```
 
@@ -111,33 +106,23 @@ NSManagedObjectContext *childContext = [[NSManagedObjectContext defaultContext] 
 
 ``` objc
 [[NSManagedObjectContext defaultContext] performBlock:^{
-    // People by their last name ascending
-    NSArray *sortedPeople = [Person allWithOrder:@"surname"];
+    NSArray *sortedUsers = [User allWithOrder:@"name"];
     
-    // People named John by their last name Z to A
-    NSArray *reversedPeople = [Person where:@{@"name" : @"John"}
-                                      order:@"surname DESC"];
-    
-    // You can use NSSortDescriptor too
-    NSArray *people = [Person allWithOrder:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
-    
-    // And multiple orderings with any of the above
-    NSArray *morePeople = [Person allWithOrder:@"surname ASC, name DESC"];
+    NSArray *allUsers = [User allWithOrder:@"screenName ASC, name DESC"];
     // or
-    //NSArray *morePeople = [Person allWithOrder:@"surname A, name D"];
+    NSArray *allUsers2 = [User allWithOrder:@"screenName A, name D"];
     // or
-    //NSArray *morePeople = [Person allWithOrder:@"surname, name d"];
+    NSArray *allUsers3 = [User allWithOrder:@"screenName, name d"];
+
+    NSArray *manyFriendsUsers = [User find:@"friendsCount > 100" order:@"screenName DESC"];
     
-    // Just the first 5 people named John sorted by last name
-    NSArray *fivePeople = [Person where:@"name == 'John'"
-                                  order:@"surname ASC"
-                                  limit:@(5)];
+    NSArray *fiveEnglishUsers = [User find:@"lang == 'en'" order:@"screenName ASC" limit:@(5)];
 }];
 /*
 + (NSArray *)allWithOrder:(NSString *)order;
-+ (NSArray *)where:(id)condition order:(NSString *)order;
-+ (NSArray *)where:(id)condition limit:(NSNumber *)limit;
-+ (NSArray *)where:(id)condition order:(NSString *)order limit:(NSNumber *)limit;
++ (NSArray *)find:(id)condition order:(NSString *)order;
++ (NSArray *)find:(id)condition limit:(NSNumber *)limit;
++ (NSArray *)find:(id)condition order:(NSString *)order limit:(NSNumber *)limit;
 */
 ```
 
@@ -145,30 +130,32 @@ NSManagedObjectContext *childContext = [[NSManagedObjectContext defaultContext] 
 
 ``` objc
 [[NSManagedObjectContext defaultContext] performBlock:^{
-    // count all Person entities
-    NSUInteger personCount = [Person count];
+    NSUInteger allUserCount = [User count];
     
-    // count people named John
-    NSUInteger johnCount = [Person countWhere:@"name == 'John'"];
+    NSUInteger englishUserCount = [User countWithCondition:@"lang == 'en'"];
 }];
 /*
 + (NSUInteger)count;
-+ (NSUInteger)countWhere:(id)condition;
++ (NSUInteger)countWithCondition:(id)condition;
 */
 ```
 
 #### NSFetchedResultsController
 
 ``` objc
-[[NSManagedObjectContext defaultContext] performBlock:^{
-	self.fetchedResertController = [Person createFetchedResultsControllerWithCondition:nil order:@"id" sectionNameKeyPath:nil];
-	self.fetchedResertController.delegate = self;
-
-	NSError *error = nil;
-	if ([self.fetchedResertController performFetch:&error]) {
-    	[self reloadData];
-	}
+    [[NSManagedObjectContext defaultContext] performBlock:^{
+        NSFetchedResultsController *frc = [User createFetchedResultsControllerWithCondition:nil order:@"name" sectionNameKeyPath:nil];
+        frc.delegate = self;
+        
+        NSError *error = nil;
+        if ([frc performFetch:&error]) {
+            [self reloadData];
+        }
+    }
 }];
+/*
++ (NSFetchedResultsController *)createFetchedResultsControllerWithCondition:(id)condition order:(NSString *)order sectionNameKeyPath:(NSString *)sectionNameKeyPath;
+*/
 ```
 
 #### Custom ManagedObjectContext
@@ -177,9 +164,15 @@ NSManagedObjectContext *childContext = [[NSManagedObjectContext defaultContext] 
 NSManagedObjectContext *childContext = [[NSManagedObjectContext defaultContext] createChildContext];
 
 [childContext performBlock:^{
-    Person *john = [Person createInContext:childContext];
-    Person *john = [Person find:@"name == 'John'" inContext:childContext];
-    NSArray *people = [Person allInContext:childContext];
+    User *john = [User createInContext:childContext];
+    john.name = @"John";
+    [john save];
+    
+    john = [User first:@"name == 'John'" inContext:childContext];
+    
+    NSArray *manyFriendsUsers = [User find:@"friendsCount > 100" order:@"screenName DESC" inContext:childContext];
+    
+    NSArray *allUsers = [User allInContext:childContext];
 }];
 ```
 

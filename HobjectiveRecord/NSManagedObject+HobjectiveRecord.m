@@ -125,12 +125,12 @@
     }];
 }
 
-+ (void)deleteAllWithCondition:(id)condition
++ (void)deleteWithCondition:(id)condition
 {
-    [self deleteAllWithCondition:condition inContext:[NSManagedObjectContext defaultContext]];
+    [self deleteWithCondition:condition inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (void)deleteAllWithCondition:(id)condition inContext:(NSManagedObjectContext *)context;
++ (void)deleteWithCondition:(id)condition inContext:(NSManagedObjectContext *)context;
 {
     NSArray *objects = [self find:condition inContext:context];
     
@@ -144,17 +144,17 @@
 
 + (NSArray *)all
 {
-    return [self allWithOrder:nil inContext:[NSManagedObjectContext defaultContext]];
+    return [self fetchWithCondition:nil withOrder:nil fetchLimit:nil inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (NSArray *)allInContext:(NSManagedObjectContext *)context
 {
-    return [self allWithOrder:nil inContext:[NSManagedObjectContext defaultContext]];
+    return [self fetchWithCondition:nil withOrder:nil fetchLimit:nil inContext:context];
 }
 
 + (NSArray *)allWithOrder:(NSString *)order
 {
-    return [self allWithOrder:order inContext:[NSManagedObjectContext defaultContext]];
+    return [self fetchWithCondition:nil withOrder:order fetchLimit:nil inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (NSArray *)allWithOrder:(NSString *)order inContext:(NSManagedObjectContext *)context
@@ -164,37 +164,37 @@
 
 + (NSArray *)find:(id)condition
 {
-    return [self find:condition order:nil limit:nil inContext:[NSManagedObjectContext defaultContext]];
+    return [self fetchWithCondition:condition withOrder:nil fetchLimit:nil inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (NSArray *)find:(id)condition inContext:(NSManagedObjectContext *)context
 {
-    return [self find:condition order:nil limit:nil inContext:context];
+    return [self fetchWithCondition:condition withOrder:nil fetchLimit:nil inContext:context];
 }
 
 + (NSArray *)find:(id)condition order:(NSString *)order
 {
-    return [self find:condition order:order limit:nil inContext:[NSManagedObjectContext defaultContext]];
+    return [self fetchWithCondition:condition withOrder:order fetchLimit:nil inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (NSArray *)find:(id)condition order:(NSString *)order inContext:(NSManagedObjectContext *)context
 {
-    return [self find:condition order:order limit:nil inContext:context];
+    return [self fetchWithCondition:condition withOrder:order fetchLimit:nil inContext:context];
 }
 
 + (NSArray *)find:(id)condition limit:(NSNumber *)limit
 {
-    return [self find:condition order:nil limit:limit inContext:[NSManagedObjectContext defaultContext]];
+    return [self fetchWithCondition:condition withOrder:nil fetchLimit:limit inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (NSArray *)find:(id)condition limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context
 {
-    return [self find:condition order:nil limit:limit inContext:context];
+    return [self fetchWithCondition:condition withOrder:nil fetchLimit:limit inContext:context];
 }
 
 + (NSArray *)find:(id)condition order:(NSString *)order limit:(NSNumber *)limit
 {
-    return [self find:condition order:order limit:limit inContext:[NSManagedObjectContext defaultContext]];
+    return [self fetchWithCondition:condition withOrder:order fetchLimit:limit inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (NSArray *)find:(id)condition order:(NSString *)order limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context
@@ -204,12 +204,12 @@
 
 + (instancetype)first:(id)condition
 {
-    return [self first:condition inContext:[NSManagedObjectContext defaultContext]];
+    return [self fetchWithCondition:condition withOrder:nil fetchLimit:@1 inContext:[NSManagedObjectContext defaultContext]].firstObject;
 }
 
 + (instancetype)first:(id)condition inContext:(NSManagedObjectContext *)context
 {
-    return [self find:condition limit:@1 inContext:context].firstObject;
+    return [self fetchWithCondition:condition withOrder:nil fetchLimit:@1 inContext:context].firstObject;
 }
 
 + (instancetype)firstOrCreate:(NSDictionary *)attributes
@@ -227,20 +227,20 @@
 
 + (NSUInteger)count
 {
-    return [self countWhere:nil inContext:[NSManagedObjectContext defaultContext]];
+    return [self countForFetchWithPredicate:nil inContext:[NSManagedObjectContext defaultContext]];
 }
 
 + (NSUInteger)countInContext:(NSManagedObjectContext *)context
 {
-    return [self countWhere:nil inContext:context];
+    return [self countForFetchWithPredicate:nil inContext:context];
 }
 
-+ (NSUInteger)countWhere:(id)condition
++ (NSUInteger)countWithCondition:(id)condition
 {
-    return [self countWhere:condition inContext:[NSManagedObjectContext defaultContext]];
+    return [self countForFetchWithPredicate:condition inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (NSUInteger)countWhere:(id)condition inContext:(NSManagedObjectContext *)context
++ (NSUInteger)countWithCondition:(id)condition inContext:(NSManagedObjectContext *)context
 {
     return [self countForFetchWithPredicate:condition inContext:context];
 }

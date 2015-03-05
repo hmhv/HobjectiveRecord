@@ -70,5 +70,84 @@
     }];
 }
 
+- (IBAction)test:(id)sender
+{
+//    [[NSManagedObjectContext defaultContext] performBlock:^{
+//        Tweet *tweet = [Tweet create];
+//        tweet.text = @"I am here";
+//        [tweet save];
+//        [tweet delete];
+//        
+//        tweet = [Tweet create:@{@"text" : @"hello!!",
+//                                @"lang" : @"en"
+//                                }];
+//        [tweet saveToStore];
+//        
+//        [Tweet deleteAll];
+//    }];
+    
+//    [[NSManagedObjectContext defaultContext] performBlock:^{
+//        NSArray *tweets = [Tweet all];
+//        
+//        NSArray *tweetsInEnglish = [Tweet find:@"lang == 'en'"];
+//        
+//        User *hmhv = [User first:@"screenName == 'hmhv'"];
+//        
+//        NSArray *englishMen = [User find:@{@"lang" : @"en",
+//                                           @"timeZone" : @"London"
+//                                           }];
+//        
+//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"friendsCount > 100"];
+//        NSArray *manyFriendsUsers = [User find:predicate];
+//    }];
+
+//    [[NSManagedObjectContext defaultContext] performBlock:^{
+//        NSArray *sortedUsers = [User allWithOrder:@"name"];
+//        
+//        NSArray *allUsers = [User allWithOrder:@"screenName ASC, name DESC"];
+//        // or
+//        NSArray *allUsers2 = [User allWithOrder:@"screenName A, name D"];
+//        // or
+//        NSArray *allUsers3 = [User allWithOrder:@"screenName, name d"];
+//
+//        NSArray *manyFriendsUsers = [User find:@"friendsCount > 100" order:@"screenName DESC"];
+//        
+//        NSArray *fiveEnglishUsers = [User find:@"lang == 'en'" order:@"screenName ASC" limit:@(5)];
+//    }];
+
+//    [[NSManagedObjectContext defaultContext] performBlock:^{
+//        NSUInteger allUserCount = [User count];
+//        
+//        NSUInteger englishUserCount = [User countWithCondition:@"lang == 'en'"];
+//    }];
+
+//    [[NSManagedObjectContext defaultContext] performBlock:^{
+//        NSFetchedResultsController *frc = [User createFetchedResultsControllerWithCondition:nil order:@"name" sectionNameKeyPath:nil];
+//        frc.delegate = self;
+//        
+//        NSError *error = nil;
+//        if ([frc performFetch:&error]) {
+//            [self reloadData];
+//        }
+//    }
+
+//    NSManagedObjectContext *childContext = [[NSManagedObjectContext defaultContext] createChildContext];
+//    
+//    [childContext performBlock:^{
+//        User *john = [User createInContext:childContext];
+//        john.name = @"John";
+//        [john save];
+//        
+//        john = [User first:@"name == 'John'" inContext:childContext];
+//        
+//        NSArray *manyFriendsUsers = [User find:@"friendsCount > 100" order:@"screenName DESC" inContext:childContext];
+//        
+//        NSArray *allUsers = [User allInContext:childContext];
+//    }];
+
+}
 
 @end
+
+
+
