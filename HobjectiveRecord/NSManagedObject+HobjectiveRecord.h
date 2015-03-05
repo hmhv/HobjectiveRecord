@@ -45,6 +45,9 @@
 + (void)deleteAll;
 + (void)deleteAllInContext:(NSManagedObjectContext *)context;
 
++ (void)deleteAllWithCondition:(id)condition;
++ (void)deleteAllWithCondition:(id)condition inContext:(NSManagedObjectContext *)context;
+
 #pragma mark - Finders
 
 + (NSArray *)all;
@@ -53,23 +56,23 @@
 + (NSArray *)allWithOrder:(NSString *)order;
 + (NSArray *)allWithOrder:(NSString *)order inContext:(NSManagedObjectContext *)context;
 
-+ (NSArray *)where:(id)condition;
-+ (NSArray *)where:(id)condition inContext:(NSManagedObjectContext *)context;
++ (NSArray *)find:(id)condition;
++ (NSArray *)find:(id)condition inContext:(NSManagedObjectContext *)context;
 
-+ (NSArray *)where:(id)condition order:(NSString *)order;
-+ (NSArray *)where:(id)condition order:(NSString *)order inContext:(NSManagedObjectContext *)context;
++ (NSArray *)find:(id)condition order:(NSString *)order;
++ (NSArray *)find:(id)condition order:(NSString *)order inContext:(NSManagedObjectContext *)context;
 
-+ (NSArray *)where:(id)condition limit:(NSNumber *)limit;
-+ (NSArray *)where:(id)condition limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context;
++ (NSArray *)find:(id)condition limit:(NSNumber *)limit;
++ (NSArray *)find:(id)condition limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context;
 
-+ (NSArray *)where:(id)condition order:(NSString *)order limit:(NSNumber *)limit;
-+ (NSArray *)where:(id)condition order:(NSString *)order limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context;
++ (NSArray *)find:(id)condition order:(NSString *)order limit:(NSNumber *)limit;
++ (NSArray *)find:(id)condition order:(NSString *)order limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context;
 
-+ (instancetype)find:(id)condition;
-+ (instancetype)find:(id)condition inContext:(NSManagedObjectContext *)context;
++ (instancetype)first:(id)condition;
++ (instancetype)first:(id)condition inContext:(NSManagedObjectContext *)context;
 
-+ (instancetype)findOrCreate:(NSDictionary *)condition;
-+ (instancetype)findOrCreate:(NSDictionary *)condition inContext:(NSManagedObjectContext *)context;
++ (instancetype)firstOrCreate:(NSDictionary *)condition;
++ (instancetype)firstOrCreate:(NSDictionary *)condition inContext:(NSManagedObjectContext *)context;
 
 #pragma mark - Aggregation
 

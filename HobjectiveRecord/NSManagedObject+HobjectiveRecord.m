@@ -125,6 +125,21 @@
     }];
 }
 
++ (void)deleteAllWithCondition:(id)condition
+{
+    [self deleteAllWithCondition:condition inContext:[NSManagedObjectContext defaultContext]];
+}
+
++ (void)deleteAllWithCondition:(id)condition inContext:(NSManagedObjectContext *)context;
+{
+    NSArray *objects = [self find:condition inContext:context];
+    
+    [objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [context deleteObject:obj];
+    }];
+
+}
+
 #pragma mark - Finders
 
 + (NSArray *)all
@@ -147,64 +162,64 @@
     return [self fetchWithCondition:nil withOrder:order fetchLimit:nil inContext:context];
 }
 
-+ (NSArray *)where:(id)condition
++ (NSArray *)find:(id)condition
 {
-    return [self where:condition order:nil limit:nil inContext:[NSManagedObjectContext defaultContext]];
+    return [self find:condition order:nil limit:nil inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (NSArray *)where:(id)condition inContext:(NSManagedObjectContext *)context
++ (NSArray *)find:(id)condition inContext:(NSManagedObjectContext *)context
 {
-    return [self where:condition order:nil limit:nil inContext:context];
+    return [self find:condition order:nil limit:nil inContext:context];
 }
 
-+ (NSArray *)where:(id)condition order:(NSString *)order
++ (NSArray *)find:(id)condition order:(NSString *)order
 {
-    return [self where:condition order:order limit:nil inContext:[NSManagedObjectContext defaultContext]];
+    return [self find:condition order:order limit:nil inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (NSArray *)where:(id)condition order:(NSString *)order inContext:(NSManagedObjectContext *)context
++ (NSArray *)find:(id)condition order:(NSString *)order inContext:(NSManagedObjectContext *)context
 {
-    return [self where:condition order:order limit:nil inContext:context];
+    return [self find:condition order:order limit:nil inContext:context];
 }
 
-+ (NSArray *)where:(id)condition limit:(NSNumber *)limit
++ (NSArray *)find:(id)condition limit:(NSNumber *)limit
 {
-    return [self where:condition order:nil limit:limit inContext:[NSManagedObjectContext defaultContext]];
+    return [self find:condition order:nil limit:limit inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (NSArray *)where:(id)condition limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context
++ (NSArray *)find:(id)condition limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context
 {
-    return [self where:condition order:nil limit:limit inContext:context];
+    return [self find:condition order:nil limit:limit inContext:context];
 }
 
-+ (NSArray *)where:(id)condition order:(NSString *)order limit:(NSNumber *)limit
++ (NSArray *)find:(id)condition order:(NSString *)order limit:(NSNumber *)limit
 {
-    return [self where:condition order:order limit:limit inContext:[NSManagedObjectContext defaultContext]];
+    return [self find:condition order:order limit:limit inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (NSArray *)where:(id)condition order:(NSString *)order limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context
++ (NSArray *)find:(id)condition order:(NSString *)order limit:(NSNumber *)limit inContext:(NSManagedObjectContext *)context
 {
     return [self fetchWithCondition:condition withOrder:order fetchLimit:limit inContext:context];
 }
 
-+ (instancetype)find:(id)condition
++ (instancetype)first:(id)condition
 {
-    return [self find:condition inContext:[NSManagedObjectContext defaultContext]];
+    return [self first:condition inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (instancetype)find:(id)condition inContext:(NSManagedObjectContext *)context
++ (instancetype)first:(id)condition inContext:(NSManagedObjectContext *)context
 {
-    return [self where:condition limit:@1 inContext:context].firstObject;
+    return [self find:condition limit:@1 inContext:context].firstObject;
 }
 
-+ (instancetype)findOrCreate:(NSDictionary *)attributes
++ (instancetype)firstOrCreate:(NSDictionary *)attributes
 {
-    return [self findOrCreate:attributes inContext:[NSManagedObjectContext defaultContext]];
+    return [self firstOrCreate:attributes inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (instancetype)findOrCreate:(NSDictionary *)properties inContext:(NSManagedObjectContext *)context
++ (instancetype)firstOrCreate:(NSDictionary *)properties inContext:(NSManagedObjectContext *)context
 {
-    NSManagedObject *existing = [self find:properties inContext:context];
+    NSManagedObject *existing = [self first:properties inContext:context];
     return existing ?: [self create:properties inContext:context];
 }
 
@@ -511,9 +526,6 @@
             else if (attributeType == NSDecimalAttributeType) {
                 value = [NSDecimalNumber decimalNumberWithString:value];
             }
-            else if (attributeType == NSDecimalAttributeType) {
-                value = [NSDecimalNumber decimalNumberWithString:value];
-            }
             else if (attributeType == NSBinaryDataAttributeType) {
                 value = [value dataUsingEncoding:NSUTF8StringEncoding];
             }
@@ -532,7 +544,7 @@
             Class class = NSClassFromString(relationship.destinationEntity.name);
             id object = nil;
             if ([class useFindOrCreate]) {
-                object = [class findOrCreate:value inContext:self.managedObjectContext];
+                object = [class firstOrCreate:value inContext:self.managedObjectContext];
             }
             else {
                 object = [class create:value inContext:self.managedObjectContext];
@@ -549,7 +561,7 @@
                 if ([obj isKindOfClass:[NSDictionary class]]) {
                     id object = nil;
                     if ([class useFindOrCreate]) {
-                        object = [class findOrCreate:value inContext:self.managedObjectContext];
+                        object = [class firstOrCreate:value inContext:self.managedObjectContext];
                     }
                     else {
                         object = [class create:value inContext:self.managedObjectContext];
@@ -577,7 +589,7 @@
             Class class = NSClassFromString(relationship.destinationEntity.name);
             id object = nil;
             if ([class useFindOrCreate]) {
-                object = [class findOrCreate:value inContext:self.managedObjectContext];
+                object = [class firstOrCreate:value inContext:self.managedObjectContext];
             }
             else {
                 object = [class create:value inContext:self.managedObjectContext];
