@@ -18,5 +18,6 @@
 @property (weak, nonatomic) id<DetailViewControllerDelegate> delegate;
 
 @property (nonatomic, strong) NSManagedObjectID *objectId;
+@property (nonatomic, strong) NSManagedObjectContext *parentMoc;
 
 @end

@@ -38,6 +38,9 @@
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     
+    // read below article for 3 layaer context detail
+    // http://www.cocoanetics.com/2012/07/multi-context-coredata/
+    
     if (self.use3Layer) {
         self.moc = [[NSManagedObjectContext defaultContext] createChildContextForMainQueue];
     }
@@ -95,6 +98,7 @@
         DetailViewController *vc = [segue destinationViewController];
         vc.delegate = self;
         vc.objectId = self.selectedObjectId;
+        vc.parentMoc = self.moc;
     }
 }
 
@@ -116,8 +120,9 @@
                             @"" : @"",
                             @"user" : @{@"idStr" : [NSString stringWithFormat:@"%u", arc4random()],
                                         @"screenName" : [NSString stringWithFormat:@"S:%u", arc4random()]}
-                            }];
+                            } inContext:self.moc];
         }
+        [self.moc saveToStore];
     }];
 }
 
@@ -188,11 +193,9 @@
         UILabel *lower = (UILabel *)[cell viewWithTag:2];
         lower.text = t.text;
 
-        if ([t.user.profileImageUrl length] > 0) {
-            UIImageView *imageView = (UIImageView *)[cell viewWithTag:3];
-            [imageView sd_setImageWithURL:[NSURL URLWithString:t.user.profileImageUrl]
-                         placeholderImage:nil];
-        }
+        UIImageView *imageView = (UIImageView *)[cell viewWithTag:3];
+        [imageView sd_setImageWithURL:[NSURL URLWithString:t.user.profileImageUrl]
+                     placeholderImage:nil];
 
         return;
     }
@@ -211,11 +214,9 @@
             UILabel *lower = (UILabel *)[cell viewWithTag:2];
             lower.text = text;
             
-            if ([profileUrl length] > 0) {
-                UIImageView *imageView = (UIImageView *)[cell viewWithTag:3];
-                [imageView sd_setImageWithURL:[NSURL URLWithString:profileUrl]
-                             placeholderImage:nil];
-            }
+            UIImageView *imageView = (UIImageView *)[cell viewWithTag:3];
+            [imageView sd_setImageWithURL:[NSURL URLWithString:profileUrl]
+                         placeholderImage:nil];
 
         });
     }];
@@ -238,11 +239,9 @@
     UILabel *lower = (UILabel *)[cell viewWithTag:2];
     lower.text = text;
 
-    if ([profileUrl length] > 0) {
-        UIImageView *imageView = (UIImageView *)[cell viewWithTag:3];
-        [imageView sd_setImageWithURL:[NSURL URLWithString:profileUrl]
-                     placeholderImage:nil];
-    }
+    UIImageView *imageView = (UIImageView *)[cell viewWithTag:3];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:profileUrl]
+                 placeholderImage:nil];
 
 #elif USE_PERFORM_BLOCK_SYNCHRONOUSLY
 
@@ -262,11 +261,9 @@
     UILabel *lower = (UILabel *)[cell viewWithTag:2];
     lower.text = text;
 
-    if ([profileUrl length] > 0) {
-        UIImageView *imageView = (UIImageView *)[cell viewWithTag:3];
-        [imageView sd_setImageWithURL:[NSURL URLWithString:profileUrl]
-                     placeholderImage:nil];
-    }
+    UIImageView *imageView = (UIImageView *)[cell viewWithTag:3];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:profileUrl]
+                 placeholderImage:nil];
 
 #endif
 }
