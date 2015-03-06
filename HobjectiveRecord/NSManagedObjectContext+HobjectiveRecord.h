@@ -28,9 +28,10 @@
 + (instancetype)defaultContext;
 
 + (void)save;
++ (void)saveToParent;
 
 - (void)save;
-- (void)saveToStore;
+- (void)saveToParent;
 - (void)performBlockSynchronously:(void (^)())block;
 
 - (instancetype)createChildContext;

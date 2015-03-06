@@ -86,7 +86,7 @@
     }
     
     [self.moc performBlock:^{
-        [self.moc saveToStore];
+        [self.moc save];
     }];
 }
 

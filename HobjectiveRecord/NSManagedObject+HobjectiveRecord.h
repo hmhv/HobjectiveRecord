@@ -28,11 +28,10 @@
 #pragma mark - Instance Method
 
 - (void)save;
-- (void)saveToStore;
+- (void)saveToParent;
 - (void)delete;
 
 - (void)performBlock:(void (^)())block;
-- (void)performBlockSynchronously:(void (^)())block;
 
 #pragma mark - Creation / Deletion
 

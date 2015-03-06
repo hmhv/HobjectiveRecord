@@ -120,7 +120,7 @@
                                         @"screenName" : [NSString stringWithFormat:@"S:%u", arc4random()]}
                             } inContext:self.moc];
         }
-        [self.moc saveToStore];
+        [self.moc save];
     }];
 }
 

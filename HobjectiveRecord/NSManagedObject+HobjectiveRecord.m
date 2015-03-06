@@ -62,9 +62,9 @@
     [self.managedObjectContext save];
 }
 
-- (void)saveToStore
+- (void)saveToParent
 {
-    [self.managedObjectContext saveToStore];
+    [self.managedObjectContext saveToParent];
 }
 
 - (void)delete
@@ -78,13 +78,6 @@
         [self.managedObjectContext performBlock:^{
             block();
         }];
-    }
-}
-
-- (void)performBlockSynchronously:(void (^)())block
-{
-    if (block) {
-        [self.managedObjectContext performBlockSynchronously:block];
     }
 }
 
@@ -309,15 +302,13 @@
 
 #pragma mark - Private
 
-+ (NSPredicate *)predicateFromDictionary:(NSDictionary *)dict inContext:(NSManagedObjectContext *)context
++ (NSPredicate *)predicateFromDictionary:(NSDictionary *)dict entity:(NSEntityDescription *)entity inContext:(NSManagedObjectContext *)context
 {
     NSMutableArray *subPredicates = [NSMutableArray array];
     
-    NSEntityDescription *entity = [NSEntityDescription entityForName:[self entityName] inManagedObjectContext:context];
-    
     [dict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         
-        NSString *localKey = [self keyForRemoteKey:key inContext:context];
+        NSString *localKey = [self keyForRemoteKey:key entity:entity inContext:context];
         
         if ([entity attributesByName][localKey]) {
             id object = [NSPredicate predicateWithFormat:@"%K = %@", localKey, obj];
@@ -328,10 +319,10 @@
         }
     }];
     
-    return [NSCompoundPredicate andPredicateWithSubpredicates:subPredicates];
+    return subPredicates.count > 0 ? [NSCompoundPredicate andPredicateWithSubpredicates:subPredicates] : nil;
 }
 
-+ (NSPredicate *)predicateFromObject:(id)condition inContext:(NSManagedObjectContext *)context
++ (NSPredicate *)predicateFromObject:(id)condition entity:(NSEntityDescription *)entity inContext:(NSManagedObjectContext *)context
 {
     if ([condition isKindOfClass:[NSPredicate class]]) {
         return condition;
@@ -342,7 +333,7 @@
     }
     
     if ([condition isKindOfClass:[NSDictionary class]]) {
-        return [self predicateFromDictionary:condition inContext:context];
+        return [self predicateFromDictionary:condition entity:entity inContext:context];
     }
     
     return nil;
@@ -385,7 +376,7 @@
         }
     }
     
-    return sortDescriptors;
+    return sortDescriptors.count > 0 ? sortDescriptors : nil;
 }
 
 + (NSFetchRequest *)createFetchRequestWithCondition:(id)condition
@@ -399,7 +390,7 @@
     [request setEntity:entity];
     
     if (condition) {
-        [request setPredicate:[self predicateFromObject:condition inContext:context]];
+        [request setPredicate:[self predicateFromObject:condition entity:entity inContext:context]];
     }
     
     if (order) {
@@ -460,7 +451,7 @@
         
         [propertis enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             
-            NSString *localKey = [[self class] keyForRemoteKey:key inContext:self.managedObjectContext];
+            NSString *localKey = [[self class] keyForRemoteKey:key entity:self.entity inContext:self.managedObjectContext];
             
             if (attributes[localKey]) {
                 [self setAttributeValue:obj forKey:localKey withAttribute:attributes[localKey]];
@@ -484,7 +475,7 @@
     return s_keyMappingCache;
 }
 
-+ (NSString *)keyForRemoteKey:(NSString *)remoteKey inContext:(NSManagedObjectContext *)context
++ (NSString *)keyForRemoteKey:(NSString *)remoteKey entity:(NSEntityDescription *)entity inContext:(NSManagedObjectContext *)context
 {
     NSString *localKey = [[self keyMappingCache] objectForKey:remoteKey];
     
@@ -493,8 +484,6 @@
         
         if (localKey == nil) {
             NSString *camelCasedProperty = [remoteKey toCamelCase];
-            
-            NSEntityDescription *entity = [NSEntityDescription entityForName:[self entityName] inManagedObjectContext:context];
             
             if ([entity propertiesByName][camelCasedProperty]) {
                 localKey = camelCasedProperty;

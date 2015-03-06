@@ -59,9 +59,11 @@ NSString * const HRPersistentStoreCoordinatorDidMigratePersistentStore = @"HRPer
         NSLog(@"ERROR WHILE CREATING PERSISTENT STORE %@", error);
         
         if (error.code == NSPersistentStoreIncompatibleVersionHashError) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:HRPersistentStoreCoordinatorWillMigratePersistentStore object:nil];
+            error = nil;
             
             NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption : @YES, NSInferMappingModelAutomaticallyOption : @YES};
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:HRPersistentStoreCoordinatorWillMigratePersistentStore object:nil];
             
             store = [storeCoordinator addPersistentStoreWithType:(useInMemoryStore ? NSInMemoryStoreType : NSSQLiteStoreType)
                                                    configuration:nil
@@ -78,4 +80,5 @@ NSString * const HRPersistentStoreCoordinatorDidMigratePersistentStore = @"HRPer
     
     return storeCoordinator;
 }
+
 @end

@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
 #import "NSManagedObjectContext+HobjectiveRecord.h"
 #import "NSPersistentStoreCoordinator+HobjectiveRecord.h"
 
@@ -34,9 +33,6 @@
     dispatch_once(&onceToken, ^{
         s_defaultContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
         s_defaultContext.persistentStoreCoordinator = [NSPersistentStoreCoordinator setupDefaultStore];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(save) name:UIApplicationWillTerminateNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(save) name:UIApplicationDidEnterBackgroundNotification object:nil];
     });
     return s_defaultContext;
 }
@@ -48,18 +44,14 @@
     }];
 }
 
-- (void)save
++ (void)saveToParent
 {
-    if ([self hasChanges]) {
-        NSError *error = nil;
-        BOOL saved = [self save:&error];
-        if (saved == NO) {
-            NSLog(@"ERROR WHILE SAVE %@", error);
-        }
-    }
+    [[self defaultContext] performBlock:^{
+        [[self defaultContext] saveToParent];
+    }];
 }
 
-- (void)saveToStore
+- (void)save
 {
     if ([self hasChanges]) {
         NSError *error = nil;
@@ -69,8 +61,19 @@
         }
         else if (self.parentContext) {
             [self.parentContext performBlock:^{
-                [self.parentContext saveToStore];
+                [self.parentContext save];
             }];
+        }
+    }
+}
+
+- (void)saveToParent
+{
+    if ([self hasChanges] && self.parentContext) {
+        NSError *error = nil;
+        BOOL saved = [self save:&error];
+        if (saved == NO) {
+            NSLog(@"ERROR WHILE SAVE %@", error);
         }
     }
 }
