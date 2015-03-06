@@ -44,6 +44,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		101E2DA01AAA474F00493647 /* CoreDataTest 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CoreDataTest 4.xcdatamodel"; sourceTree = "<group>"; };
 		A71DA6141A9EB56C00B2069C /* CoreDataTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataTest.xcdatamodel; sourceTree = "<group>"; };
 		A71DA6161A9EBB9000B2069C /* CoreDataTest 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CoreDataTest 2.xcdatamodel"; sourceTree = "<group>"; };
 		A71DA61D1A9EBD1C00B2069C /* CoreDataTest 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "CoreDataTest 3.xcdatamodel"; sourceTree = "<group>"; };
@@ -500,11 +501,12 @@
 		A71DA6131A9EB56C00B2069C /* CoreDataTest.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				101E2DA01AAA474F00493647 /* CoreDataTest 4.xcdatamodel */,
 				A71DA61D1A9EBD1C00B2069C /* CoreDataTest 3.xcdatamodel */,
 				A71DA6161A9EBB9000B2069C /* CoreDataTest 2.xcdatamodel */,
 				A71DA6141A9EB56C00B2069C /* CoreDataTest.xcdatamodel */,
 			);
-			currentVersion = A71DA61D1A9EBD1C00B2069C /* CoreDataTest 3.xcdatamodel */;
+			currentVersion = 101E2DA01AAA474F00493647 /* CoreDataTest 4.xcdatamodel */;
 			path = CoreDataTest.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

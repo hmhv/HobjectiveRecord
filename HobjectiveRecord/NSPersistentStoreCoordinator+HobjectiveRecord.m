@@ -44,6 +44,26 @@ NSString * const HRPersistentStoreCoordinatorDidMigratePersistentStore = @"HRPer
     return s_defaultCStoreCoordinator;
 }
 
++ (BOOL)needMigration
+{
+    return [self needMigrationWithModelURL:nil storeURL:nil];
+}
+
++ (BOOL)needMigrationWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL
+{
+    NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:(modelURL ?: [NSURL defaultModelURL])];
+
+    NSError *error = nil;
+    NSDictionary *storeMetadata = [self metadataForPersistentStoreOfType:NSSQLiteStoreType
+                                                                     URL:(storeURL ?: [NSURL defaultStoreURL])
+                                                                   error:&error];
+    if (storeMetadata) {
+        return ![managedObjectModel isConfiguration:nil compatibleWithStoreMetadata:storeMetadata];
+    }
+
+    return NO;
+}
+
 + (instancetype)createStoreCoordinatorWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore
 {
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:(modelURL ?: [NSURL defaultModelURL])];
@@ -65,7 +85,7 @@ NSString * const HRPersistentStoreCoordinatorDidMigratePersistentStore = @"HRPer
             
             [[NSNotificationCenter defaultCenter] postNotificationName:HRPersistentStoreCoordinatorWillMigratePersistentStore object:nil];
             
-            store = [storeCoordinator addPersistentStoreWithType:(useInMemoryStore ? NSInMemoryStoreType : NSSQLiteStoreType)
+            store = [storeCoordinator addPersistentStoreWithType:NSSQLiteStoreType
                                                    configuration:nil
                                                              URL:(storeURL ?: [NSURL defaultStoreURL])
                                                          options:options error:&error];
