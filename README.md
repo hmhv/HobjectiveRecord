@@ -1,6 +1,6 @@
 # HobjectiveRecord
 
-[![HobjectiveRecord version](https://img.shields.io/cocoapods/v/HobjectiveRecord.svg?style=plastic)](http://cocoadocs.org/docsets/HobjectiveRecord)[![HobjectiveRecord platform](https://img.shields.io/cocoapods/p/HobjectiveRecord.svg?style=plastic)](http://cocoadocs.org/docsets/HobjectiveRecord)[![HobjectiveRecord license](https://img.shields.io/cocoapods/l/HobjectiveRecord.svg?style=plastic)](http://opensource.org/licenses/MIT)[![Join the chat at https://gitter.im/hmhv/HobjectiveRecord](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hmhv/HobjectiveRecord?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![HobjectiveRecord version](https://img.shields.io/cocoapods/v/HobjectiveRecord.svg?style=plastic)](http://cocoadocs.org/docsets/HobjectiveRecord) [![HobjectiveRecord platform](https://img.shields.io/cocoapods/p/HobjectiveRecord.svg?style=plastic)](http://cocoadocs.org/docsets/HobjectiveRecord) [![HobjectiveRecord license](https://img.shields.io/cocoapods/l/HobjectiveRecord.svg?style=plastic)](http://opensource.org/licenses/MIT) [![Join the chat at https://gitter.im/hmhv/HobjectiveRecord](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hmhv/HobjectiveRecord?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 HobjectiveRecord is inspired by [ObjectiveRecord](https://github.com/supermarin/ObjectiveRecord) and customized for background `NSManagedObjectContext`.
