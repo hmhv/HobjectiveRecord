@@ -3,7 +3,7 @@
 Pod::Spec.new do |s|
   s.name         = "HobjectiveRecord"
   s.version      = @version
-  s.summary      = "Lightweight and sexy CoreData Library　for background operation"
+  s.summary      = "Lightweight and sexy CoreData Library for background `NSManagedObjectContext`"
   s.homepage     = "https://github.com/hmhv/HobjectiveRecord"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
 

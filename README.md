@@ -1,13 +1,18 @@
 # HobjectiveRecord
 
-[![Join the chat at https://gitter.im/hmhv/HobjectiveRecord](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hmhv/HobjectiveRecord?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![HobjectiveRecord version](https://img.shields.io/cocoapods/v/HobjectiveRecord.svg?style=plastic)](http://cocoadocs.org/docsets/HobjectiveRecord)[![HobjectiveRecord platform](https://img.shields.io/cocoapods/p/HobjectiveRecord.svg?style=plastic)](http://cocoadocs.org/docsets/HobjectiveRecord)[![HobjectiveRecord license](https://img.shields.io/cocoapods/l/HobjectiveRecord.svg?style=plastic)](http://opensource.org/licenses/MIT)[![Join the chat at https://gitter.im/hmhv/HobjectiveRecord](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/hmhv/HobjectiveRecord?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-HobjectiveRecord is inspired by [ObjectiveRecord](https://github.com/supermarin/ObjectiveRecord) and customized for background operation, 
-to use `NSManagedObjectContext` of `NSPrivateQueueConcurrencyType` and `performBlock:`
 
-Before you use, i recommend you read this article [a-real-guide-to-core-data-concurrency](http://quellish.tumblr.com/post/97430076027/a-real-guide-to-core-data-concurrency).
+HobjectiveRecord is inspired by [ObjectiveRecord](https://github.com/supermarin/ObjectiveRecord) and customized for background `NSManagedObjectContext`.
+
+Before you use, i recommend you read these articles
+
+- [a-real-guide-to-core-data-concurrency](http://quellish.tumblr.com/post/97430076027/a-real-guide-to-core-data-concurrency).
+- [Multi-Context CoreData](http://www.cocoanetics.com/2012/07/multi-context-coredata/).
 
 > You can use HobjectiveRecord with swift. check HobjectiveRecordDemo-Swift.
+> or use [SobjectiveRecord](https://github.com/hmhv/SobjectiveRecord) written in swift
+
 
 #### Usage
 
@@ -27,7 +32,6 @@ Before you use, i recommend you read this article [a-real-guide-to-core-data-con
     
     return YES;
 }
-@end
 /*
 + (void)setupDefaultStore;
 + (void)setupDefaultStoreWithModelURL:(NSURL *)modelURL storeURL:(NSURL *)storeURL useInMemoryStore:(BOOL)useInMemoryStore;
@@ -65,7 +69,6 @@ NSManagedObjectContext *childContext = [[NSManagedObjectContext defaultContext] 
     
     [Tweet deleteAll];
 }];
-
 /*
 + (instancetype)create;
 + (instancetype)create:(NSDictionary *)attributes;
