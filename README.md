@@ -143,6 +143,22 @@ NSManagedObjectContext *childContext = [[NSManagedObjectContext defaultContext] 
 */
 ```
 
+#### BatchUpdate
+
+``` objc
+[[NSManagedObjectContext defaultContext] performBlock:^{
+    
+    [User batchUpdateWithCondition:@"friendsCount > 10" propertiesToUpdate:@{@"friendsCount": @0}];
+    
+    // update all entities
+    [User batchUpdateWithCondition:nil propertiesToUpdate:@{@"friendsCount": @100}];
+}];
+/*
++ (NSUInteger)batchUpdateWithCondition:(id)condition propertiesToUpdate:(NSDictionary *)propertiesToUpdate;
++ (NSUInteger)batchUpdateWithCondition:(id)condition propertiesToUpdate:(NSDictionary *)propertiesToUpdate inContext:(NSManagedObjectContext *)context;
+*/
+```
+
 #### NSFetchedResultsController
 
 ``` objc

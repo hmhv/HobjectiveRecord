@@ -81,6 +81,11 @@
 + (NSUInteger)countWithCondition:(id)condition;
 + (NSUInteger)countWithCondition:(id)condition inContext:(NSManagedObjectContext *)context;
 
+#pragma mark - BatchUpdate
+
++ (NSUInteger)batchUpdateWithCondition:(id)condition propertiesToUpdate:(NSDictionary *)propertiesToUpdate;
++ (NSUInteger)batchUpdateWithCondition:(id)condition propertiesToUpdate:(NSDictionary *)propertiesToUpdate inContext:(NSManagedObjectContext *)context;
+
 #pragma mark - FetchedResultsController
 
 + (NSFetchedResultsController *)createFetchedResultsControllerWithCondition:(id)condition order:(NSString *)order sectionNameKeyPath:(NSString *)sectionNameKeyPath;

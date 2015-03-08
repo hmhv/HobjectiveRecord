@@ -238,6 +238,43 @@
     return [self countForFetchWithPredicate:condition inContext:context];
 }
 
+#pragma mark - BatchUpdate
+
++ (NSUInteger)batchUpdateWithCondition:(id)condition propertiesToUpdate:(NSDictionary *)propertiesToUpdate
+{
+    return [self batchUpdateWithCondition:condition
+                       propertiesToUpdate:propertiesToUpdate
+                                inContext:[NSManagedObjectContext defaultContext]];
+}
+
++ (NSUInteger)batchUpdateWithCondition:(id)condition propertiesToUpdate:(NSDictionary *)propertiesToUpdate inContext:(NSManagedObjectContext *)context
+{
+     NSUInteger updatedObjectsCount = 0;
+    
+    if ([context respondsToSelector:@selector(executeRequest:error:)]) {
+        NSBatchUpdateRequest *request = [self createBatchUpdateRequestWithCondition:condition
+                                                                 propertiesToUpdate:propertiesToUpdate
+                                                                          inContext:context];
+        NSError *error = nil;
+        NSBatchUpdateResult *result = (NSBatchUpdateResult *)[context executeRequest:request error:&error];
+        if (error) {
+            NSLog(@"ERROR WHILE EXECUTE BATCH UPDATE REEQUEST %@", error);
+        }
+        if ([result.result isKindOfClass:[NSNumber class]]) {
+            updatedObjectsCount = [result.result unsignedIntegerValue];
+        }
+    }
+    else {
+        NSArray *objects = [self find:condition inContext:context];
+        for (NSManagedObject *object in objects) {
+            [object update:propertiesToUpdate];
+        }
+        [context save];
+        updatedObjectsCount = objects.count;
+    }
+    return updatedObjectsCount;
+}
+
 #pragma mark - FetchedResultsController
 
 + (NSFetchedResultsController *)createFetchedResultsControllerWithCondition:(id)condition order:(NSString *)order sectionNameKeyPath:(NSString *)sectionNameKeyPath
@@ -377,6 +414,25 @@
     }
     
     return sortDescriptors.count > 0 ? sortDescriptors : nil;
+}
+
++ (NSBatchUpdateRequest *)createBatchUpdateRequestWithCondition:(id)condition
+                                             propertiesToUpdate:(NSDictionary *)propertiesToUpdate
+                                          inContext:(NSManagedObjectContext *)context
+{
+    NSEntityDescription *entity = [NSEntityDescription entityForName:[self entityName]
+                                              inManagedObjectContext:context];
+    NSBatchUpdateRequest *request = [[NSBatchUpdateRequest alloc] initWithEntity:entity];
+    
+    if (condition) {
+        [request setPredicate:[self predicateFromObject:condition entity:entity inContext:context]];
+    }
+    
+    request.propertiesToUpdate = propertiesToUpdate;
+    
+    request.resultType = NSUpdatedObjectsCountResultType;
+    
+    return request;
 }
 
 + (NSFetchRequest *)createFetchRequestWithCondition:(id)condition

@@ -122,6 +122,14 @@
 //    }];
 
 //    [[NSManagedObjectContext defaultContext] performBlock:^{
+//        
+//        [User batchUpdateWithCondition:@"friendsCount > 10" propertiesToUpdate:@{@"friendsCount": @0}];
+//        
+//        // update all entities
+//        [User batchUpdateWithCondition:nil propertiesToUpdate:@{@"friendsCount": @100}];
+//    }];
+    
+//    [[NSManagedObjectContext defaultContext] performBlock:^{
 //        NSFetchedResultsController *frc = [User createFetchedResultsControllerWithCondition:nil order:@"name" sectionNameKeyPath:nil];
 //        frc.delegate = self;
 //        
