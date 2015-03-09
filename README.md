@@ -65,7 +65,7 @@ NSManagedObjectContext *childContext = [[NSManagedObjectContext defaultContext] 
     
     tweet = [Tweet create:@{@"text" : @"hello!!",
                             @"lang" : @"en"} ];
-    [tweet saveToStore];
+    [tweet save];
     
     [Tweet deleteAll];
 }];
@@ -75,7 +75,7 @@ NSManagedObjectContext *childContext = [[NSManagedObjectContext defaultContext] 
 + (void)deleteAll;
 + (void)deleteWithCondition:(id)condition;
 - (void)save;
-- (void)saveToStore;
+- (void)saveToParent;
 - (void)delete;
 */
 ```
