@@ -81,7 +81,7 @@
 //        tweet = [Tweet create:@{@"text" : @"hello!!",
 //                                @"lang" : @"en"
 //                                }];
-//        [tweet saveToStore];
+//        [tweet saveToParent];
 //        
 //        [Tweet deleteAll];
 //    }];
