@@ -84,7 +84,7 @@ class TweetViewController : UIViewController, NSFetchedResultsControllerDelegate
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier! == "DetailSegue" {
-            var vc = segue.destinationViewController as DetailViewController
+            var vc = segue.destinationViewController as! DetailViewController
             vc.delegate = self;
             vc.objectId = self.selectedObjectId;
             vc.parentMoc = self.moc;
@@ -114,7 +114,7 @@ class TweetViewController : UIViewController, NSFetchedResultsControllerDelegate
                     ]
                     , inContext: self.moc!)
             }
-            self.moc?.saveToStore()
+            self.moc!.save()
         })
     }
 
@@ -155,7 +155,7 @@ class TweetViewController : UIViewController, NSFetchedResultsControllerDelegate
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("CELL", forIndexPath: indexPath) as UITableViewCell
+        var cell = tableView.dequeueReusableCellWithIdentifier("CELL", forIndexPath: indexPath) as! UITableViewCell
         
         if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1)
         {
@@ -169,16 +169,16 @@ class TweetViewController : UIViewController, NSFetchedResultsControllerDelegate
     }
     
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        var t = self.fetchedResertController?.objectAtIndexPath(indexPath) as Tweet
+        var t = self.fetchedResertController?.objectAtIndexPath(indexPath) as! Tweet
         
         if self.use3Layer {
-            var upper = cell.viewWithTag(1) as UILabel
+            var upper = cell.viewWithTag(1) as! UILabel
             upper.text = "\(indexPath.row) - \(t.user.screenName)"
 
-            var lower = cell.viewWithTag(2) as UILabel
+            var lower = cell.viewWithTag(2) as! UILabel
             lower.text = t.text
             
-            var imageView = cell.viewWithTag(3) as UIImageView
+            var imageView = cell.viewWithTag(3) as! UIImageView
             if let _profileImageUrl = t.user.profileImageUrl {
                 imageView.sd_setImageWithURL(NSURL(string: _profileImageUrl), placeholderImage: nil)
             }
@@ -195,13 +195,13 @@ class TweetViewController : UIViewController, NSFetchedResultsControllerDelegate
                 var profileImageUrl = t.user.profileImageUrl
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    var upper = cell.viewWithTag(1) as UILabel
+                    var upper = cell.viewWithTag(1) as! UILabel
                     upper.text = screenName
                     
-                    var lower = cell.viewWithTag(2) as UILabel
+                    var lower = cell.viewWithTag(2) as! UILabel
                     lower.text = text
                     
-                    var imageView = cell.viewWithTag(3) as UIImageView
+                    var imageView = cell.viewWithTag(3) as! UIImageView
                     if let _profileImageUrl = profileImageUrl {
                         imageView.sd_setImageWithURL(NSURL(string: _profileImageUrl), placeholderImage: nil)
                     }
@@ -215,14 +215,14 @@ class TweetViewController : UIViewController, NSFetchedResultsControllerDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
-        var t = self.fetchedResertController?.objectAtIndexPath(indexPath) as Tweet
+        var t = self.fetchedResertController?.objectAtIndexPath(indexPath) as! Tweet
         self.selectedObjectId = t.objectID
         self.performSegueWithIdentifier("DetailSegue", sender: self)
     }
 
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            var t = self.fetchedResertController?.objectAtIndexPath(indexPath) as Tweet
+            var t = self.fetchedResertController?.objectAtIndexPath(indexPath) as! Tweet
             t.performBlock({ () -> Void in
                 if t.user.tweets.count == 1 {
                     t.user.delete()
